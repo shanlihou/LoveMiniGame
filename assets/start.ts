@@ -14,12 +14,11 @@ export class start extends Component {
 
 if(typeof wx === 'undefined'){
     console.log("非微信环境");
-    director.loadScene("start");
 }else{
     console.log("微信环境");
-    assetManager.loadBundle("game",(err,bundle)=>{
-        console.log("加载bundle1", err);
-        console.log("加载bundle2", bundle);
-        director.loadScene("start");
-    });
 }
+assetManager.loadBundle("game",(err,bundle)=>{
+    console.log("加载bundle1", err);
+    console.log("加载bundle2", bundle);
+    director.loadScene("start");
+});

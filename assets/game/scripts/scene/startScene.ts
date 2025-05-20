@@ -1,4 +1,4 @@
-import { _decorator, assetManager, Component, ImageAsset, Node, Sprite, SpriteFrame, UITransform } from 'cc';
+import { _decorator, assetManager, Component, director, ImageAsset, Node, Sprite, SpriteFrame, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
@@ -9,6 +9,15 @@ export class startScene extends Component {
 
     update(deltaTime: number) {
         
+    }
+
+    enterMain() {
+      console.log("enterMain");
+      assetManager.loadBundle("game",(err,bundle)=>{
+          console.log("加载bundle1", err);
+          console.log("加载bundle2", bundle);
+          director.loadScene("main");
+      });
     }
 
     takePhoto() {
