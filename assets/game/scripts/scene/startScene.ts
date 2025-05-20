@@ -1,4 +1,4 @@
-import { _decorator, assetManager, Component, director, ImageAsset, Node, Sprite, SpriteFrame, UITransform } from 'cc';
+import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
@@ -20,40 +20,54 @@ export class startScene extends Component {
       });
     }
 
+    takePhotoInWx() {
+      let that = this;
+      wx.chooseImage({
+          count: 1, // 默认选择一张图片
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机
+          success(res) {
+            const tempFilePaths = res.tempFilePaths
+            // 在这里处理选择的图片，例如显示在页面上
+            console.log(tempFilePaths)
+            that.loadRemoteImage(tempFilePaths[0]);
+          },
+          fail(err) {
+            console.error('选择图片失败', err)
+          },
+          complete() {
+            console.log('选择图片接口调用完成')
+          }
+        });
+    }
+
+    takePhotoDebug() {
+      console.log("takePhotoDebug");
+      // 这里加载本地测试图片
+      resources.load('face-line', SpriteFrame, (err, spriteFrame) => {
+        
+        if (err) {
+            console.error(err);
+            return;
+        }
+        this.setSpriteFrameToDisplayPhoto(spriteFrame);
+    });
+    }
+
     takePhoto() {
-        if (typeof wx === 'undefined') return;  // 非微信环境跳过
+      if (typeof wx === 'undefined') {
+        this.takePhotoDebug();
+      } else {
+        this.takePhotoInWx();
+      }
+    }
 
-        let that = this;
-        wx.chooseImage({
-            count: 1, // 默认选择一张图片
-            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图
-            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机
-            success(res) {
-              const tempFilePaths = res.tempFilePaths
-              // 在这里处理选择的图片，例如显示在页面上
-              console.log(tempFilePaths)
-              that.loadRemoteImage(tempFilePaths[0]);
-            },
-            fail(err) {
-              console.error('选择图片失败', err)
-            },
-            complete() {
-              console.log('选择图片接口调用完成')
-            }
-          });
-
-
-
-        // const ctx = wx.createCameraContext();
-        // ctx.takePhoto({
-        //     quality: 'high',
-        //     success: (res) => {
-        //         const tempFilePath = res.tempImagePath;
-        //         // this.previewPhoto(tempFilePath);  // 预览图片
-        //         // this.uploadPhoto(tempFilePath);   // 上传图片
-        //     },
-        //     fail: (err) => console.error('拍照失败:', err)
-        // });
+    setSpriteFrameToDisplayPhoto(spriteFrame: SpriteFrame) {
+      let child = this.node.getChildByName("displayPhoto");
+      let sprite = child.getComponent(Sprite);
+      sprite.spriteFrame = spriteFrame;
+      sprite.sizeMode = Sprite.SizeMode.CUSTOM; // 必须设置为CUSTOM
+      child.getComponent(UITransform).setContentSize(100, 100); // 设置节点尺寸
     }
 
     loadRemoteImage(url: string) {
@@ -62,13 +76,7 @@ export class startScene extends Component {
                 console.log(err);
                 return;
             }
-
-            // 创建一个Sprite组件
-            let child = this.node.getChildByName("displayPhoto");
-            let sprite = child.getComponent(Sprite);
-            sprite.spriteFrame = SpriteFrame.createWithImage(imageAsset);
-            sprite.sizeMode = Sprite.SizeMode.CUSTOM; // 必须设置为CUSTOM
-            child.getComponent(UITransform).setContentSize(100, 100); // 设置节点尺寸
+            this.setSpriteFrameToDisplayPhoto(SpriteFrame.createWithImage(imageAsset));
         });
     }
 }
