@@ -1,4 +1,5 @@
-import { _decorator, Component, EventTouch, Input, input, Node } from 'cc';
+import { _decorator, Component, EventTouch, Input, input, Node, Vec2, Vec3, Touch, director } from 'cc';
+import { EVENT_TYPE_SCALE_FACE_END } from '../common/constant';
 const { ccclass, property } = _decorator;
 
 @ccclass('Zoom')
@@ -6,11 +7,14 @@ export class Zoom extends Component {
     private startDistance: number = 0;
     private startScale: number = 1;
     private minScale: number = 0.5;  // 最小缩放比例
-    private maxScale: number = 3;    // 最大缩放比例
+    private maxScale: number = 10;    // 最大缩放比例
+
+    // 单指移动相关变量
+    private lastTouchPos: Vec2 = new Vec2();
+    private isMoving: boolean = false;
 
     start() {
-
-
+        // 多点触摸默认开启，无需特别设置
     }
 
     update(deltaTime: number) {
@@ -20,62 +24,91 @@ export class Zoom extends Component {
     onLoad() {
         // 开启多点触摸
         // input.setMultiTouchEnabled(true);
-        
-        // 监听触摸事件
-        input.on(Input.EventType.TOUCH_START, this.onTouchStart, this);
-        input.on(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
-        input.on(Input.EventType.TOUCH_END, this.onTouchEnd, this);
+        this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.node.on(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+        this.node.on(Node.EventType.TOUCH_END, this.onTouchEnd, this);
     }
 
     onDestroy() {
         // 移除监听
-        input.off(Input.EventType.TOUCH_START, this.onTouchStart, this);
-        input.off(Input.EventType.TOUCH_MOVE, this.onTouchMove, this);
-        input.off(Input.EventType.TOUCH_END, this.onTouchEnd, this);
+        this.node.off(Node.EventType.TOUCH_START, this.onTouchStart, this);
+        this.node.off(Node.EventType.TOUCH_MOVE, this.onTouchMove, this);
+        this.node.off(Node.EventType.TOUCH_END, this.onTouchEnd, this);
     }
     
     // 计算两点间距离
     private getDistance(touch1: Touch, touch2: Touch): number {
-        // const dx = touch1.getLocationX() - touch2.getLocationX();
-        // const dy = touch1.getLocationY() - touch2.getLocationY();
-        // return Math.sqrt(dx * dx + dy * dy);
-        return 0;
+        const dx = touch1.getUILocation().x - touch2.getUILocation().x;
+        const dy = touch1.getUILocation().y - touch2.getUILocation().y;
+        return Math.sqrt(dx * dx + dy * dy);
     }
     
     // 触摸开始
     private onTouchStart(event: EventTouch) {
         const touches = event.getTouches();
-        console.log("onTouchStart", touches);
+        console.log("onTouchStart", touches.length);
         if (touches.length >= 2) {
-            // this.startDistance = this.getDistance(touches[0], touches[1]);
+            this.startDistance = this.getDistance(touches[0], touches[1]);
             this.startScale = this.node.scale.x;
+        } else if (touches.length === 1) {
+            const location = touches[0].getUILocation();
+            this.lastTouchPos.set(location.x, location.y);
+            this.isMoving = true;
         }
     }
     
     // 触摸移动
     private onTouchMove(event: EventTouch) {
         const touches = event.getTouches();
+        console.log("onTouchMove", touches.length);
         if (touches.length >= 2) {
             // 计算当前两指距离
-            // const currentDistance = this.getDistance(touches[0], touches[1]);
+            const currentDistance = this.getDistance(touches[0], touches[1]);
+            if (this.startDistance === 0) {
+                this.startDistance = currentDistance;
+                this.startScale = this.node.scale.x;
+            }
+            else {
+                // 计算缩放比例
+                let scale = this.startScale * (currentDistance / this.startDistance);
+                
+                // 限制缩放范围
+                scale = Math.max(this.minScale, Math.min(scale, this.maxScale));
+                
+                // 应用缩放
+                this.node.setScale(scale, scale);
+            }
+        } else if (touches.length === 1 && this.isMoving) {
+            // 单指移动
+            const location = touches[0].getUILocation();
+            const currentPos = new Vec2(location.x, location.y);
+            const delta = new Vec2(
+                currentPos.x - this.lastTouchPos.x,
+                currentPos.y - this.lastTouchPos.y
+            );
             
-            // // 计算缩放比例
-            // let scale = this.startScale * (currentDistance / this.startDistance);
+            // 更新节点位置
+            const currentPos3D = this.node.position;
+            this.node.setPosition(
+                currentPos3D.x + delta.x,
+                currentPos3D.y + delta.y,
+                currentPos3D.z
+            );
             
-            // // 限制缩放范围
-            // scale = Math.max(this.minScale, Math.min(scale, this.maxScale));
-            
-            // // 应用缩放
-            // this.node.setScale(scale, scale);
+            // 更新上一次触摸位置
+            this.lastTouchPos.set(currentPos.x, currentPos.y);
         }
     }
     
     // 触摸结束
     private onTouchEnd(event: EventTouch) {
         const touches = event.getTouches();
-        if (touches.length < 2) {
-            this.startDistance = 0;
-        }
+        console.log("onTouchEnd", touches.length);
+        this.startDistance = 0;
+        this.isMoving = false;
+
+        director.emit(EVENT_TYPE_SCALE_FACE_END, this.node.position, this.node.scale.x);
+        
     }
 }
 

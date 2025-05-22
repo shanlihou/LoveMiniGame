@@ -1,17 +1,32 @@
-import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform } from 'cc';
+import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2 } from 'cc';
+import { EVENT_TYPE_SCALE_FACE_END } from '../common/constant';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
 export class startScene extends Component {
-    start() {
+    @property(SpriteFrame)
+    private faceLine: SpriteFrame = null;
 
+    private isSetFace: boolean = false;
+
+    start() {
+      director.on(EVENT_TYPE_SCALE_FACE_END, this.onScaleFaceEnd, this);
     }
 
     update(deltaTime: number) {
         
     }
 
+    onScaleFaceEnd(pos: Vec2, scale: number) {
+      console.log("onScaleFaceEnd", pos, scale);
+    }
+
     enterMain() {
+      if (!this.isSetFace) {
+        console.log("未设置人脸");
+        return;
+      }
+
       console.log("enterMain");
       assetManager.loadBundle("game",(err,bundle)=>{
           console.log("加载bundle1", err);
@@ -44,14 +59,8 @@ export class startScene extends Component {
     takePhotoDebug() {
       console.log("takePhotoDebug");
       // 这里加载本地测试图片
-      resources.load('face-line', SpriteFrame, (err, spriteFrame) => {
-        
-        if (err) {
-            console.error(err);
-            return;
-        }
-        this.setSpriteFrameToDisplayPhoto(spriteFrame);
-    });
+      console.log("this.faceLine", this.faceLine);
+      this.setSpriteFrameToDisplayPhoto(this.faceLine);
     }
 
     takePhoto() {
@@ -63,11 +72,14 @@ export class startScene extends Component {
     }
 
     setSpriteFrameToDisplayPhoto(spriteFrame: SpriteFrame) {
-      let child = this.node.getChildByName("displayPhoto");
+      let child = this.node.getChildByName("head-no-body");
       let sprite = child.getComponent(Sprite);
       sprite.spriteFrame = spriteFrame;
       sprite.sizeMode = Sprite.SizeMode.CUSTOM; // 必须设置为CUSTOM
       child.getComponent(UITransform).setContentSize(100, 100); // 设置节点尺寸
+      if (spriteFrame) {
+        this.isSetFace = true;
+      }
     }
 
     loadRemoteImage(url: string) {
