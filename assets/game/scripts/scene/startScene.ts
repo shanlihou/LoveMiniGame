@@ -1,5 +1,6 @@
 import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2 } from 'cc';
-import { EVENT_TYPE_SCALE_FACE_END } from '../common/constant';
+import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE } from '../common/constant';
+import { GlobalData } from '../common/globalData';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
@@ -19,6 +20,8 @@ export class startScene extends Component {
 
     onScaleFaceEnd(pos: Vec2, scale: number) {
       console.log("onScaleFaceEnd", pos, scale);
+      GlobalData.instance.facePos = pos;
+      GlobalData.instance.faceScale = scale;
     }
 
     enterMain() {
@@ -31,6 +34,7 @@ export class startScene extends Component {
       assetManager.loadBundle("game",(err,bundle)=>{
           console.log("加载bundle1", err);
           console.log("加载bundle2", bundle);
+          GlobalData.instance.faceSpriteFrame = this.faceLine;
           director.loadScene("main");
       });
     }
@@ -72,11 +76,12 @@ export class startScene extends Component {
     }
 
     setSpriteFrameToDisplayPhoto(spriteFrame: SpriteFrame) {
-      let child = this.node.getChildByName("head-no-body");
+      let child = this.node.getChildByName("add-head");
       let sprite = child.getComponent(Sprite);
       sprite.spriteFrame = spriteFrame;
+      this.faceLine = spriteFrame;
       sprite.sizeMode = Sprite.SizeMode.CUSTOM; // 必须设置为CUSTOM
-      child.getComponent(UITransform).setContentSize(100, 100); // 设置节点尺寸
+      child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
       if (spriteFrame) {
         this.isSetFace = true;
       }

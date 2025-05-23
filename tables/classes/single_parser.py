@@ -14,7 +14,7 @@ class SingleParser(object):
         excel_name = os.path.basename(self.excel_path)
         # 首字母大写
         return excel_name.split('.')[0].capitalize()
-        
+
     def parse(self):
         for index, row in self.df.iterrows():
             row_data = row.to_dict()
@@ -23,7 +23,7 @@ class SingleParser(object):
         output_list = [
             f'export class {self.class_name} {{',
             ]
-        
+
         header_name_list = self.df.columns.tolist()
 
         for index, _type in enumerate(self.dtype_row):
@@ -32,7 +32,7 @@ class SingleParser(object):
 
         output_list.append('}')
 
-        output_list.append(f'const datas: {self.class_name}[] = [')
+        output_list.append(f'export const datas: {self.class_name}[] = [')
         for index, row in self.df.iterrows():
             row_data = row.to_dict()
 
@@ -63,16 +63,16 @@ class SingleParser(object):
         """格式化值以符合TypeScript语法"""
         if pd.isna(value):
             return "null"
-        
+
         type_info = str(type_info).lower()
         if type_info == "string":
             return f'"{value}"'
-        
+
         if type_info == "array":
             # 假设数组元素用逗号分隔
             return f"[{value}]" if value else "[]"
         else:
             return str(value)
-        
-        
-        
+
+
+

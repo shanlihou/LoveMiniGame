@@ -1,3 +1,5 @@
+import { Vec2 } from "cc";
+
 export const HIT_TYPE_PINCH = 1;
 export const HIT_TYPE_POKE = 2;
 export const HIT_TYPE_POKE_DOUBLE = 3;
@@ -17,4 +19,6 @@ export const HIT_POS_RIGHT_EYE = 10;
 
 
 export const EVENT_TYPE_SCALE_FACE_END = 1;
+
+export const FACE_INIT_SIZE = new Vec2(100, 100);
 
