@@ -4,6 +4,8 @@ const { ccclass, property } = _decorator;
 @ccclass('HitTrigger')
 export class HitTrigger extends Component {
     private textureBuffer: Uint8Array;
+    private texWidth: number;
+    private texHeight: number;
 
     start() {
         this.textureBuffer = this.getBufferView();
@@ -19,20 +21,20 @@ export class HitTrigger extends Component {
         const spriteFrame = sprite.spriteFrame;
         const texture = spriteFrame.getGFXTexture();
         const uit = this.node.getComponent(UITransform);
-        let width = uit.width;
-        let height = uit.height;
+        this.texWidth = texture.width;
+        this.texHeight = texture.height;
 
         const buffView = [];
         const regions = [];
         const region0 = new gfx.BufferTextureCopy();
         region0.texOffset.x = 0;
         region0.texOffset.y = 0;
-        region0.texExtent.width = width;
-        region0.texExtent.height = height;
+        region0.texExtent.width = this.texWidth;
+        region0.texExtent.height = this.texHeight;
         regions.push(region0);
 
         
-        const buffer = new Uint8Array(width * height * 4);
+        const buffer = new Uint8Array(this.texWidth * this.texHeight * 4);
         buffView.push(buffer);
         director.root?.device.copyTextureToBuffers(texture, buffView, regions);
         return buffer;
@@ -52,13 +54,16 @@ export class HitTrigger extends Component {
         const localPos = uit.convertToNodeSpaceAR(new Vec3(touchPos.x, touchPos.y, 0));
         console.log('localPos :', localPos);
         // 计算在纹理中的像素坐标
-        const pixelX = Math.floor(localPos.x + uit.width / 2);
-        const pixelY = Math.floor(uit.height / 2 - localPos.y);
+        let pixelX = localPos.x + uit.width / 2;
+        let pixelY = uit.height / 2 - localPos.y;
+
+        pixelX = Math.floor(pixelX / uit.width * this.texWidth);
+        pixelY = Math.floor(pixelY / uit.height * this.texHeight);
 
         // 确保坐标在纹理范围内
-        if (pixelX >= 0 && pixelX < uit.width && pixelY >= 0 && pixelY < uit.height) {
+        if (pixelX >= 0 && pixelX < this.texWidth && pixelY >= 0 && pixelY < this.texHeight) {
             // 计算在buffer中的索引位置
-            const idx = (pixelY * uit.width + pixelX) * 4;
+            const idx = (pixelY * this.texWidth + pixelX) * 4;
             console.log(`idx is ${idx}, buffer len is ${this.textureBuffer.length}, pixelX is ${pixelX}, pixelY is ${pixelY}`);
             
             // 获取RGBA值
@@ -68,6 +73,12 @@ export class HitTrigger extends Component {
             const a = this.textureBuffer[idx + 3];
 
             console.log(`触摸位置像素值: R:${r} G:${g} B:${b} A:${a}`);
+            if (r == 255 && g == 255 && b == 255 && a == 0) {
+                console.log('hit false');
+            }
+            else {
+                console.log('hit true');
+            }
         }
     }
 
