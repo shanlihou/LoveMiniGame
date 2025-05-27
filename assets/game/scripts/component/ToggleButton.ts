@@ -1,4 +1,5 @@
-import { _decorator, Button, Component, EventHandler, Node, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Button, Component, director, EventHandler, Node, Sprite, SpriteFrame } from 'cc';
+import { EVENT_TYPE_HIT_BUTTON_CLICK } from '../common/constant';
 const { ccclass, property } = _decorator;
 
 @ccclass('ToggleButton')
@@ -9,6 +10,9 @@ export class ToggleButton extends Component {
 
     @property(SpriteFrame)
     private toggleSpriteFrame: SpriteFrame;
+
+    @property()
+    private hitType: number = 0;
  
     private isToggle: boolean = false;
 
@@ -30,13 +34,25 @@ export class ToggleButton extends Component {
 
         btn.clickEvents.push(newEventHandler);
 
+        director.on(EVENT_TYPE_HIT_BUTTON_CLICK, this.onHitButtonClick, this);
+    }
+
+    onHitButtonClick(hitType: number) {
+        if (hitType === this.hitType) {
+            this.isToggle = !this.isToggle;
+            let sprite = this.node.getComponent(Sprite);
+            sprite.spriteFrame = this.isToggle ? this.toggleSpriteFrame : this.normalSpriteFrame;
+        }
+        else if (this.isToggle) {
+            this.isToggle = false;
+            let sprite = this.node.getComponent(Sprite);
+            sprite.spriteFrame = this.normalSpriteFrame;
+        }
     }
 
     public onClick() {
-        console.log('onclick')
-        this.isToggle = !this.isToggle;
-        let sprite = this.node.getComponent(Sprite);
-        sprite.spriteFrame = this.isToggle ? this.toggleSpriteFrame : this.normalSpriteFrame;
+        
+        director.emit(EVENT_TYPE_HIT_BUTTON_CLICK, this.hitType);
     }
 
     update(deltaTime: number) {

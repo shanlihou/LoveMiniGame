@@ -19,6 +19,7 @@ export const HIT_POS_RIGHT_EYE = 10;
 
 
 export const EVENT_TYPE_SCALE_FACE_END = 1;
+export const EVENT_TYPE_HIT_BUTTON_CLICK = 2;
 
 export const FACE_INIT_SIZE = new Vec2(100, 100);
 

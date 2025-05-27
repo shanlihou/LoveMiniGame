@@ -17,6 +17,9 @@ export class hitScene extends Component {
         child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
         child.setPosition(GlobalData.instance.facePos.x, GlobalData.instance.facePos.y);
         child.setScale(GlobalData.instance.faceScale, GlobalData.instance.faceScale);
+
+        let hand = this.node.getChildByName("sticker-handleft");
+        hand.on(Node.EventType.TOUCH_START, this.onHitPos, this);
     }
     
     update(deltaTime: number) {
@@ -29,5 +32,9 @@ export class hitScene extends Component {
         // let child = hitEvent.target as Node;
         // let btn = child.getComponent(Button);
         // btn.normalSprite = this.touchSpriteFrame;
+    }
+
+    onHitPos(hitEvent: EventTouch) {
+        console.log('onHitPos', hitEvent)
     }
 }
