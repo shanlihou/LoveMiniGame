@@ -12,7 +12,16 @@ export class HitTrigger extends Component {
         // 隐藏当前 spriteFrame
         const sprite = this.node.getComponent(Sprite);
         // sprite.enabled = false;
-        this.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+        sprite.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
+    }
+
+    getHitRegion() : number {
+        const sprite = this.node.getComponent(Sprite);
+        const spriteFrame = sprite.spriteFrame;
+        const name = spriteFrame.name;
+        const start = "array".length;
+        const region = name.substring(start);
+        return parseInt(region);
     }
 
     getBufferView() :Uint8Array {
@@ -77,7 +86,7 @@ export class HitTrigger extends Component {
                 console.log('hit false');
             }
             else {
-                console.log('hit true');
+                console.log('hit true', this.getHitRegion());
             }
         }
     }
