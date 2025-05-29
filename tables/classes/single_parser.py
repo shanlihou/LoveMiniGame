@@ -71,6 +71,13 @@ class SingleParser(object):
         if type_info == "array":
             # 假设数组元素用逗号分隔
             return f"[{value}]" if value else "[]"
+        
+        if type_info == "int":
+            return str(int(value))
+        
+        if type_info == "boolean":
+            return str(value).lower()
+
         else:
             return str(value)
 

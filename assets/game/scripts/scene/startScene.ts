@@ -12,6 +12,9 @@ export class startScene extends Component {
 
     start() {
       director.on(EVENT_TYPE_SCALE_FACE_END, this.onScaleFaceEnd, this);
+      let addHead = this.node.getChildByName("add-head");
+      GlobalData.instance.facePos = new Vec2(addHead.position.x, addHead.position.y);
+      console.log("GlobalData.instance.facePos", GlobalData.instance.facePos);
     }
 
     update(deltaTime: number) {

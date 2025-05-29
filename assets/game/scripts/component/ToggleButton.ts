@@ -42,6 +42,8 @@ export class ToggleButton extends Component {
             this.isToggle = !this.isToggle;
             let sprite = this.node.getComponent(Sprite);
             sprite.spriteFrame = this.isToggle ? this.toggleSpriteFrame : this.normalSpriteFrame;
+
+            director.emit('toggleButtonEnable', this.hitType, this.isToggle);
         }
         else if (this.isToggle) {
             this.isToggle = false;

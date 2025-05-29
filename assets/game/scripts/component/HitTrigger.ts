@@ -11,7 +11,7 @@ export class HitTrigger extends Component {
         this.textureBuffer = this.getBufferView();
         // 隐藏当前 spriteFrame
         const sprite = this.node.getComponent(Sprite);
-        // sprite.enabled = false;
+        sprite.enabled = false;
         sprite.node.on(Node.EventType.TOUCH_START, this.onTouchStart, this);
     }
 
@@ -61,7 +61,7 @@ export class HitTrigger extends Component {
         // 将触摸点坐标转换为节点本地坐标
         let uit = this.node.getComponent(UITransform);
         const localPos = uit.convertToNodeSpaceAR(new Vec3(touchPos.x, touchPos.y, 0));
-        console.log('localPos :', localPos);
+        // console.log('localPos :', localPos);
         // 计算在纹理中的像素坐标
         let pixelX = localPos.x + uit.width / 2;
         let pixelY = uit.height / 2 - localPos.y;
@@ -73,7 +73,7 @@ export class HitTrigger extends Component {
         if (pixelX >= 0 && pixelX < this.texWidth && pixelY >= 0 && pixelY < this.texHeight) {
             // 计算在buffer中的索引位置
             const idx = (pixelY * this.texWidth + pixelX) * 4;
-            console.log(`idx is ${idx}, buffer len is ${this.textureBuffer.length}, pixelX is ${pixelX}, pixelY is ${pixelY}`);
+            // console.log(`idx is ${idx}, buffer len is ${this.textureBuffer.length}, pixelX is ${pixelX}, pixelY is ${pixelY}`);
             
             // 获取RGBA值
             const r = this.textureBuffer[idx];
@@ -81,14 +81,18 @@ export class HitTrigger extends Component {
             const b = this.textureBuffer[idx + 2];
             const a = this.textureBuffer[idx + 3];
 
-            console.log(`触摸位置像素值: R:${r} G:${g} B:${b} A:${a}`);
+            // console.log(`触摸位置像素值: R:${r} G:${g} B:${b} A:${a}`);
             if (r == 255 && g == 255 && b == 255 && a == 0) {
-                console.log('hit false');
+                // console.log('hit false');
+                return false; // 返回 false 允许事件穿透
             }
             else {
-                console.log('hit true', this.getHitRegion());
+                // console.log('hit true', this.getHitRegion());
+                director.emit('hitTrigger', this.getHitRegion());
+                return true; // 返回 true 阻止事件穿透
             }
         }
+        return false; // 如果点击位置超出纹理范围，也允许事件穿透
     }
 
     update(deltaTime: number) {
