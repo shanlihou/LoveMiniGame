@@ -1,16 +1,9 @@
-import { _decorator, Button, Component, director, EventHandler, Node, Sprite, SpriteFrame } from 'cc';
-import { EVENT_TYPE_HIT_BUTTON_CLICK } from '../common/constant';
+import { _decorator, Button, Color, Component, director, EventHandler, Node, Sprite, SpriteFrame } from 'cc';
+import { COLOR_GRAY, COLOR_WHITE, EVENT_TYPE_HIT_BUTTON_CLICK, EVENT_TYPE_TOGGLE_BUTTON_ENABLE } from '../common/constant';
 const { ccclass, property } = _decorator;
 
 @ccclass('ToggleButton')
 export class ToggleButton extends Component {
-
-    @property(SpriteFrame)
-    private normalSpriteFrame: SpriteFrame;
-
-    @property(SpriteFrame)
-    private toggleSpriteFrame: SpriteFrame;
-
     @property()
     private hitType: number = 0;
  
@@ -21,9 +14,6 @@ export class ToggleButton extends Component {
     }
 
     onLoad() {
-        let sprite = this.node.getComponent(Sprite);
-        sprite.spriteFrame = this.normalSpriteFrame;
-
         let btn = this.node.getComponent(Button);
 
         const newEventHandler = new EventHandler();
@@ -41,19 +31,23 @@ export class ToggleButton extends Component {
         if (hitType === this.hitType) {
             this.isToggle = !this.isToggle;
             let sprite = this.node.getComponent(Sprite);
-            sprite.spriteFrame = this.isToggle ? this.toggleSpriteFrame : this.normalSpriteFrame;
+            if (this.isToggle) {
+                sprite.color = COLOR_GRAY;
+            }
+            else {
+                sprite.color = COLOR_WHITE;
+            }
 
-            director.emit('toggleButtonEnable', this.hitType, this.isToggle);
+            director.emit(EVENT_TYPE_TOGGLE_BUTTON_ENABLE, this.hitType, this.isToggle);
         }
         else if (this.isToggle) {
             this.isToggle = false;
             let sprite = this.node.getComponent(Sprite);
-            sprite.spriteFrame = this.normalSpriteFrame;
+            sprite.color = COLOR_WHITE;
         }
     }
 
     public onClick() {
-        
         director.emit(EVENT_TYPE_HIT_BUTTON_CLICK, this.hitType);
     }
 

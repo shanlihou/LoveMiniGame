@@ -1,4 +1,4 @@
-import { Vec2 } from "cc";
+import { Color, Vec2 } from "cc";
 
 export const HIT_TYPE_PINCH = 1;
 export const HIT_TYPE_POKE = 2;
@@ -20,6 +20,10 @@ export const HIT_POS_RIGHT_EYE = 10;
 
 export const EVENT_TYPE_SCALE_FACE_END = 1;
 export const EVENT_TYPE_HIT_BUTTON_CLICK = 2;
+export const EVENT_TYPE_TOGGLE_BUTTON_ENABLE = 3;
+export const EVENT_TYPE_HIT_TRIGGER = 4;
 
 export const FACE_INIT_SIZE = new Vec2(100, 100);
 
+export const COLOR_GRAY = new Color('#6d6d6d');
+export const COLOR_WHITE = new Color('#FFFFFF');

@@ -1,4 +1,5 @@
 import { _decorator, Component, director, EventTouch, gfx, Node, PolygonCollider2D, Sprite, SpriteFrame, UI, UITransform, Vec3 } from 'cc';
+import { EVENT_TYPE_HIT_TRIGGER } from '../common/constant';
 const { ccclass, property } = _decorator;
 
 @ccclass('HitTrigger')
@@ -88,7 +89,7 @@ export class HitTrigger extends Component {
             }
             else {
                 // console.log('hit true', this.getHitRegion());
-                director.emit('hitTrigger', this.getHitRegion());
+                director.emit(EVENT_TYPE_HIT_TRIGGER, this.getHitRegion());
                 return true; // 返回 true 阻止事件穿透
             }
         }

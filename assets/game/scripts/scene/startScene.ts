@@ -28,16 +28,13 @@ export class startScene extends Component {
     }
 
     enterMain() {
-      if (!this.isSetFace) {
-        console.log("未设置人脸");
-        return;
-      }
-
       console.log("enterMain");
       assetManager.loadBundle("game",(err,bundle)=>{
           console.log("加载bundle1", err);
           console.log("加载bundle2", bundle);
-          GlobalData.instance.faceSpriteFrame = this.faceLine;
+          if (this.isSetFace) {
+            GlobalData.instance.faceSpriteFrame = this.faceLine;
+          }
           director.loadScene("main");
       });
     }
