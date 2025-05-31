@@ -23,7 +23,7 @@ export const EVENT_TYPE_HIT_BUTTON_CLICK = 2;
 export const EVENT_TYPE_TOGGLE_BUTTON_ENABLE = 3;
 export const EVENT_TYPE_HIT_TRIGGER = 4;
 
-export const FACE_INIT_SIZE = new Vec2(100, 100);
+export const FACE_INIT_SIZE = new Vec2(800, 800);
 
 export const COLOR_GRAY = new Color('#6d6d6d');
 export const COLOR_WHITE = new Color('#FFFFFF');

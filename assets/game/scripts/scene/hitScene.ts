@@ -1,4 +1,4 @@
-import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText } from 'cc';
+import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText, tween, Vec3 } from 'cc';
 import { GlobalData } from '../common/globalData';
 import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE } from '../common/constant';
 const { ccclass, property } = _decorator;
@@ -16,14 +16,18 @@ export class hitScene extends Component {
     private hitMap: Map<number, HitInfo> = new Map();
     private timer: number = 0;
     private msgTimer: number = 0;
+    private isPushToilet: boolean = false;
     
     start() {
-        let child = this.node.getChildByName("add-head");
+        let headMask = this.node.getChildByName('head-mask');
+        let child = headMask.getChildByName("add-head");
         if (GlobalData.instance.faceSpriteFrame != null) {
             let sprite = child.getComponent(Sprite);
             sprite.spriteFrame = GlobalData.instance.faceSpriteFrame;
             child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
-            child.setPosition(GlobalData.instance.facePos.x, GlobalData.instance.facePos.y);
+            let x = GlobalData.instance.facePos.x - headMask.position.x;
+            let y = GlobalData.instance.facePos.y - headMask.position.y;
+            child.setPosition(x, y);
             child.setScale(GlobalData.instance.faceScale, GlobalData.instance.faceScale);
         }
         else {
@@ -43,22 +47,22 @@ export class hitScene extends Component {
     }
 
     checkHit() {
-        let curTime = new Date();
-        let deleteList: number[] = [];
-        for (let [hitType, hitInfo] of this.hitMap) {
-            if (curTime.getTime() - hitInfo.lastHitTime.getTime() > 5000) {
-                deleteList.push(hitType);
-            }
-        }
+        // let curTime = new Date();
+        // let deleteList: number[] = [];
+        // for (let [hitType, hitInfo] of this.hitMap) {
+        //     if (curTime.getTime() - hitInfo.lastHitTime.getTime() > 5000) {
+        //         deleteList.push(hitType);
+        //     }
+        // }
 
-        for (let hitType of deleteList) {
-            this.hitMap.delete(hitType);
-            this.removeActionByHitType(hitType);
-        }
+        // for (let hitType of deleteList) {
+        //     this.hitMap.delete(hitType);
+        //     this.removeActionByHitType(hitType);
+        // }
     }
 
     getStickerNode(sticker: number) {
-        let effectNode = this.node.parent.getChildByName("effect");
+        let effectNode = this.node.getChildByName("effect");
         let prefix = `${sticker}-`;
         for (let i = 0; i < effectNode.children.length; i++) {
             let child = effectNode.children[i];
@@ -90,6 +94,10 @@ export class hitScene extends Component {
 
     onHit(region: number) {
         console.log('onHit', region);
+        if (this.isPushToilet) {
+            return;
+        }
+
         if (this.hitType == -1) {
             return;
         }
@@ -119,6 +127,53 @@ export class hitScene extends Component {
             });
             this.doAction(datas[i]);
             return;
+        }
+    }
+
+    toiletClick() {
+        console.log('toilet click')
+        if (this.isPushToilet) {
+            return;
+        }
+
+        this.isPushToilet = true;
+        if (this.msgTimer) {
+            clearTimeout(this.msgTimer);
+            this.msgTimer = 0;
+        }
+        
+        // 假设有一个节点 node，需要旋转并缩小
+        const node = this.node;
+        let restorePostion = node.position.clone();
+        let restoreScale = node.scale.clone();
+
+
+        // 旋转动作 (RotateBy)
+        const delay = 3;
+        const rotateAction = tween(node).by(delay, { angle: delay * 720 }); // 1秒内旋转360度
+
+        // 缩放动作 (ScaleTo)
+        const scaleAction = tween(node).to(delay, { scale: new Vec3(0.1, 0.1, 1) }); // 1秒内缩放到0.5倍
+        // 同时执行旋转和缩放（并行动作）
+
+        const moveAction = tween(node).to(delay, { position: new Vec3(0, -300, 0) });
+
+        const spawnAction = tween(node).parallel(rotateAction, scaleAction, moveAction).call(() => {
+            this.isPushToilet = false;
+            node.setPosition(restorePostion);
+            node.setScale(restoreScale);
+            this.clearEffect();
+        });
+
+        // 执行动作
+        spawnAction.start();
+    }
+
+    clearEffect() {
+        let effectNode = this.node.getChildByName("effect");
+        for (let i = 0; i < effectNode.children.length; i++) {
+            let child = effectNode.children[i];
+            child.active = false;
         }
     }
 
