@@ -150,21 +150,25 @@ export class hitScene extends Component {
 
         // 旋转动作 (RotateBy)
         const delay = 3;
+        const originPosition = node.position.clone();
         const rotateAction = tween(node).by(delay, { angle: delay * 720 }); // 1秒内旋转360度
 
         // 缩放动作 (ScaleTo)
-        const scaleAction = tween(node).to(delay, { scale: new Vec3(0.1, 0.1, 1) }); // 1秒内缩放到0.5倍
         // 同时执行旋转和缩放（并行动作）
+        const moveAction = tween(node).to(delay, { position: new Vec3(0, -300, 0), scale: new Vec3(0.1, 0.1, 1)});
 
-        const moveAction = tween(node).to(delay, { position: new Vec3(0, -300, 0) });
-
-        const spawnAction = tween(node).parallel(rotateAction, scaleAction, moveAction).call(() => {
-            this.isPushToilet = false;
-            node.setPosition(restorePostion);
-            node.setScale(restoreScale);
+        const spawnAction = tween(node).parallel(rotateAction, moveAction).call(() => {
             this.clearEffect();
         });
 
+        const backDelay = 1;
+        const backRotation = tween(node).by(backDelay, { angle: backDelay * 720 });
+        const backMove = tween(node).to(backDelay, { position: originPosition, scale: new Vec3(1, 1, 1) });
+        spawnAction.delay(1).parallel(backRotation, backMove).call(() => {
+            node.setPosition(restorePostion);
+            node.setScale(restoreScale);
+            this.isPushToilet = false;
+        });
         // 执行动作
         spawnAction.start();
     }
