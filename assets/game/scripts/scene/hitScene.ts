@@ -173,7 +173,12 @@ export class hitScene extends Component {
         spawnAction.start();
     }
 
+    backStart() {
+        director.loadScene("start");
+    }
+
     clearEffect() {
+        this.hitMap.clear();
         let effectNode = this.node.getChildByName("effect");
         for (let i = 0; i < effectNode.children.length; i++) {
             let child = effectNode.children[i];
