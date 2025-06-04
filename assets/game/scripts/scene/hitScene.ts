@@ -1,4 +1,4 @@
-import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText, tween, Vec3 } from 'cc';
+import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText, tween, Vec3, AudioSource } from 'cc';
 import { GlobalData } from '../common/globalData';
 import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE } from '../common/constant';
 const { ccclass, property } = _decorator;
@@ -17,6 +17,7 @@ export class hitScene extends Component {
     private timer: number = 0;
     private msgTimer: number = 0;
     private isPushToilet: boolean = false;
+    private playBgm: boolean = true;
     
     start() {
         let headMask = this.node.getChildByName('head-mask');
@@ -25,8 +26,10 @@ export class hitScene extends Component {
             let sprite = child.getComponent(Sprite);
             sprite.spriteFrame = GlobalData.instance.faceSpriteFrame;
             child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
-            let x = GlobalData.instance.facePos.x - headMask.position.x;
-            let y = GlobalData.instance.facePos.y - headMask.position.y;
+            // let x = GlobalData.instance.facePos.x - headMask.position.x;
+            // let y = GlobalData.instance.facePos.y - headMask.position.y;
+            let x = GlobalData.instance.facePos.x;
+            let y = GlobalData.instance.facePos.y;
             child.setPosition(x, y);
             child.setScale(GlobalData.instance.faceScale, GlobalData.instance.faceScale);
         }
@@ -88,6 +91,18 @@ export class hitScene extends Component {
             }
         }
     }
+
+    onBgmClick() {
+        console.log('onBgmClick');
+        let audio = this.node.getComponent(AudioSource);
+        this.playBgm = !this.playBgm;
+        if (this.playBgm) {
+            audio.play();
+        }
+        else {
+            audio.pause();
+        }
+    }
     
     update(deltaTime: number) {
     }
@@ -141,6 +156,10 @@ export class hitScene extends Component {
             clearTimeout(this.msgTimer);
             this.msgTimer = 0;
         }
+
+        let rushNode = this.node.getChildByName("rush-music");
+        let rushAudio = rushNode.getComponent(AudioSource);
+        rushAudio.play();
         
         // 假设有一个节点 node，需要旋转并缩小
         const node = this.node;

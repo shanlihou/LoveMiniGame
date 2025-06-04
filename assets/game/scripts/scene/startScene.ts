@@ -11,9 +11,13 @@ export class startScene extends Component {
 
     private isSetFace: boolean = false;
 
+    getAddHead() {
+      return this.node.getChildByName("head-mask").getChildByName("add-head");
+    }
+
     start() {
       director.on(EVENT_TYPE_SCALE_FACE_END, this.onScaleFaceEnd, this);
-      let addHead = this.node.getChildByName("add-head");
+      let addHead = this.getAddHead();
       GlobalData.instance.facePos = new Vec2(addHead.position.x, addHead.position.y);
       console.log("GlobalData.instance.facePos", GlobalData.instance.facePos);
 
@@ -243,7 +247,7 @@ export class startScene extends Component {
     }
 
     setSpriteFrameToDisplayPhoto(spriteFrame: SpriteFrame) {
-      let child = this.node.getChildByName("add-head");
+      let child = this.getAddHead();
       let sprite = child.getComponent(Sprite);
       sprite.spriteFrame = spriteFrame;
       this.faceLine = spriteFrame;
