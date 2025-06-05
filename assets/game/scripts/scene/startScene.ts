@@ -1,7 +1,8 @@
-import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color } from 'cc';
+import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate } from 'cc';
 import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE } from '../common/constant';
 import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
+import { ClickRich } from '../component/ClickRich';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
@@ -10,6 +11,9 @@ export class startScene extends Component {
     private faceLine: SpriteFrame = null;
 
     private isSetFace: boolean = false;
+
+    @property(Prefab)
+    private privacyDialog: Prefab = null;
 
     getAddHead() {
       return this.node.getChildByName("head-mask").getChildByName("add-head");
@@ -33,9 +37,12 @@ export class startScene extends Component {
           // 如果需要主动弹窗见wx.requirePrivacyAuthorize
           console.log("onNeedPrivacyAuthorization");
           resolve({ event: 'agree' });
-        });
+        });   
       }
+
+      this.node.on("onRich", this.onRich, this);
     }
+
 
     update(deltaTime: number) {
         
@@ -115,118 +122,22 @@ export class startScene extends Component {
       })
     }
 
-    openPrivacyWindow() {
-      // 创建弹窗节点
-      const dialog = new Node('PrivacyDialog');
-      dialog.parent = this.node;
-      
-      // 创建背景遮罩
-      const mask = new Node('Mask');
-      mask.parent = dialog;
-      const maskSprite = mask.addComponent(Sprite);
-      maskSprite.color = new Color(0, 0, 0, 180);
-      const maskTransform = mask.getComponent(UITransform);
-      maskTransform.setContentSize(720, 1280); // 设置遮罩大小
-      
-      // 创建弹窗面板
-      const panel = new Node('Panel');
-      panel.parent = dialog;
-      const panelSprite = panel.addComponent(Sprite);
-      panelSprite.color = new Color(255, 255, 255, 255);
-      const panelTransform = panel.getComponent(UITransform);
-      panelTransform.setContentSize(600, 450);
-      
-      // 创建圆角背景
-      const bg = new Node('Background');
-      bg.parent = panel;
-      const bgSprite = bg.addComponent(Sprite);
-      bgSprite.color = new Color(255, 255, 255, 255);
-      const bgTransform = bg.getComponent(UITransform);
-      bgTransform.setContentSize(580, 430);
-      
-      // 创建标题背景
-      const titleBg = new Node('TitleBg');
-      titleBg.parent = panel;
-      const titleBgSprite = titleBg.addComponent(Sprite);
-      titleBgSprite.color = new Color(66, 133, 244, 255);
-      const titleBgTransform = titleBg.getComponent(UITransform);
-      titleBgTransform.setContentSize(580, 80);
-      titleBg.position = new Vec3(0, 175, 0);
-      
-      // 创建标题
-      const title = new Node('Title');
-      title.parent = titleBg;
-      const titleLabel = title.addComponent(Label);
-      titleLabel.string = '隐私政策提示';
-      titleLabel.fontSize = 36;
-      titleLabel.color = new Color(255, 255, 255, 255);
-      titleLabel.horizontalAlign = Label.HorizontalAlign.CENTER;
-      titleLabel.verticalAlign = Label.VerticalAlign.CENTER;
-      
-      // 创建内容文本
-      const content = new Node('Content');
-      content.parent = panel;
-      const contentLabel = content.addComponent(Label);
-      contentLabel.string = '我们需要获取您的头像信息用于游戏体验，是否同意？';
-      contentLabel.fontSize = 32;
-      contentLabel.color = new Color(51, 51, 51, 255);
-      contentLabel.horizontalAlign = Label.HorizontalAlign.CENTER;
-      contentLabel.verticalAlign = Label.VerticalAlign.CENTER;
-      contentLabel.overflow = Label.Overflow.SHRINK;
-      content.position = new Vec3(0, 50, 0);
-      
-      // 创建按钮容器
-      const buttonContainer = new Node('ButtonContainer');
-      buttonContainer.parent = panel;
-      buttonContainer.position = new Vec3(0, -120, 0);
-      
-      // 创建确定按钮
-      const confirmBtn = new Node('ConfirmBtn');
-      confirmBtn.parent = buttonContainer;
-      const confirmBtnSprite = confirmBtn.addComponent(Sprite);
-      confirmBtnSprite.color = new Color(76, 175, 80, 255);
-      const confirmBtnTransform = confirmBtn.getComponent(UITransform);
-      confirmBtnTransform.setContentSize(220, 90);
-      confirmBtn.position = new Vec3(-130, 0, 0);
-      
-      const confirmLabel = new Node('Label');
-      confirmLabel.parent = confirmBtn;
-      const confirmText = confirmLabel.addComponent(Label);
-      confirmText.string = '确定';
-      confirmText.fontSize = 32;
-      confirmText.color = new Color(255, 255, 255, 255);
-      confirmText.horizontalAlign = Label.HorizontalAlign.CENTER;
-      confirmText.verticalAlign = Label.VerticalAlign.CENTER;
-      
-      // 创建取消按钮
-      const cancelBtn = new Node('CancelBtn');
-      cancelBtn.parent = buttonContainer;
-      const cancelBtnSprite = cancelBtn.addComponent(Sprite);
-      cancelBtnSprite.color = new Color(244, 67, 54, 255);
-      const cancelBtnTransform = cancelBtn.getComponent(UITransform);
-      cancelBtnTransform.setContentSize(220, 90);
-      cancelBtn.position = new Vec3(130, 0, 0);
-      
-      const cancelLabel = new Node('Label');
-      cancelLabel.parent = cancelBtn;
-      const cancelText = cancelLabel.addComponent(Label);
-      cancelText.string = '取消';
-      cancelText.fontSize = 32;
-      cancelText.color = new Color(255, 255, 255, 255);
-      cancelText.horizontalAlign = Label.HorizontalAlign.CENTER;
-      cancelText.verticalAlign = Label.VerticalAlign.CENTER;
-      
-      // 添加按钮点击事件
-      const button = confirmBtn.addComponent(Button);
-      button.node.on(Node.EventType.TOUCH_END, () => {
+    loadPrivacyDialog() {
+      if (this.node.getChildByName("privacyDialog")) {
+        return;
+      }
+
+      const dialog = instantiate(this.privacyDialog);
+      dialog.name = "privacyDialog";
+      this.node.addChild(dialog);
+      dialog.getChildByName("rich").getComponent(ClickRich).clickEvent = this.node;
+    }
+
+    destroyPrivacyDialog() {
+      const dialog = this.node.getChildByName("privacyDialog");
+      if (dialog) {
         dialog.destroy();
-        this.takePhotoWxPrivacy();
-      });
-      
-      const cancelButton = cancelBtn.addComponent(Button);
-      cancelButton.node.on(Node.EventType.TOUCH_END, () => {
-        dialog.destroy();
-      });
+      }
     }
 
     takePhotoDebug() {
@@ -236,13 +147,27 @@ export class startScene extends Component {
       this.setSpriteFrameToDisplayPhoto(this.faceLine);
     }
 
+    onRich(event: string) {
+      console.log("onRich", event);
+      if (event === "rich") {
+        this.openPrivacyContract();
+      } else if (event === "cancel") {
+        this.destroyPrivacyDialog();
+      } else if (event === "confirm") {
+        this.destroyPrivacyDialog();
+        this.takePhotoWxPrivacy();
+      }
+    }
+
     takePhoto() {
       if (typeof wx === 'undefined') {
-        this.takePhotoDebug();
+        this.loadPrivacyDialog();
+        // this.takePhotoDebug();
       } else {
         // this.takePhotoWxPrivacy();
         // this.openPrivacyContract();
-        this.openPrivacyWindow();
+        // this.openPrivacyWindow();
+        this.loadPrivacyDialog();
       }
     }
 

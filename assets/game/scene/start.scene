@@ -1144,6 +1144,10 @@
       "__uuid__": "91df22c2-82c2-45c9-a29b-a1b29e8047cd@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
+    "privacyDialog": {
+      "__uuid__": "0f8e1d52-5ea7-4f30-92a4-1ca306643b89",
+      "__expectedType__": "cc.Prefab"
+    },
     "_id": "80rI5BGCdP56VuTeRVMBmX"
   },
   {
