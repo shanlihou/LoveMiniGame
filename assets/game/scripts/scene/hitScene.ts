@@ -3,6 +3,7 @@ import { GlobalData } from '../common/globalData';
 import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE } from '../common/constant';
 const { ccclass, property } = _decorator;
 import { datas, Hit } from '../data/Hit';
+import { PlayEffect } from '../component/PlayEffect';
 
 class HitInfo {
     times: number;
@@ -17,7 +18,6 @@ export class hitScene extends Component {
     private timer: number = 0;
     private msgTimer: number = 0;
     private isPushToilet: boolean = false;
-    private playBgm: boolean = true;
     
     start() {
         let headMask = this.node.getChildByName('head-mask');
@@ -25,7 +25,7 @@ export class hitScene extends Component {
         if (GlobalData.instance.faceSpriteFrame != null) {
             let sprite = child.getComponent(Sprite);
             sprite.spriteFrame = GlobalData.instance.faceSpriteFrame;
-            child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
+            // child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
             // let x = GlobalData.instance.facePos.x - headMask.position.x;
             // let y = GlobalData.instance.facePos.y - headMask.position.y;
             let x = GlobalData.instance.facePos.x;
@@ -91,18 +91,6 @@ export class hitScene extends Component {
             }
         }
     }
-
-    onBgmClick() {
-        console.log('onBgmClick');
-        let audio = this.node.getComponent(AudioSource);
-        this.playBgm = !this.playBgm;
-        if (this.playBgm) {
-            audio.play();
-        }
-        else {
-            audio.pause();
-        }
-    }
     
     update(deltaTime: number) {
     }
@@ -116,6 +104,9 @@ export class hitScene extends Component {
         if (this.hitType == -1) {
             return;
         }
+
+        let playEffect = this.node.getComponent(PlayEffect);
+        playEffect.playHitEffect(this.hitType - 1);
 
         let nextHitTime = 0;
         if (this.hitMap.has(this.hitType)) {
@@ -157,9 +148,8 @@ export class hitScene extends Component {
             this.msgTimer = 0;
         }
 
-        let rushNode = this.node.getChildByName("rush-music");
-        let rushAudio = rushNode.getComponent(AudioSource);
-        rushAudio.play();
+        let playEffect = this.node.getComponent(PlayEffect);
+        playEffect.playRush();
         
         // 假设有一个节点 node，需要旋转并缩小
         const node = this.node;
@@ -213,6 +203,11 @@ export class hitScene extends Component {
             if (stickerNode != null) {
                 stickerNode.active = true;
             }
+        }
+
+        if (action.music != null) {
+            let playEffect = this.node.getComponent(PlayEffect);
+            playEffect.playActionEffect(action.music - 1);
         }
 
         // 显示消息气泡

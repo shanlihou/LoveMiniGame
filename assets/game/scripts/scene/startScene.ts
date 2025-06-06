@@ -1,14 +1,18 @@
-import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate } from 'cc';
+import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate, AudioClip } from 'cc';
 import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE } from '../common/constant';
 import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
+import { AudioMgr } from '../component/AudioMgr';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
 export class startScene extends Component {
     @property(SpriteFrame)
     private faceLine: SpriteFrame = null;
+
+    @property(AudioClip)
+    private bgm: AudioClip = null;
 
     private isSetFace: boolean = false;
 
@@ -20,6 +24,8 @@ export class startScene extends Component {
     }
 
     start() {
+      console.log("startScene start");
+      AudioMgr.Instance.init(this.bgm);
       director.on(EVENT_TYPE_SCALE_FACE_END, this.onScaleFaceEnd, this);
       let addHead = this.getAddHead();
       GlobalData.instance.facePos = new Vec2(addHead.position.x, addHead.position.y);
@@ -177,7 +183,8 @@ export class startScene extends Component {
       sprite.spriteFrame = spriteFrame;
       this.faceLine = spriteFrame;
       sprite.sizeMode = Sprite.SizeMode.CUSTOM; // 必须设置为CUSTOM
-      child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
+      // 获取 spriteFrame 的原始尺寸
+      // child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
       if (spriteFrame) {
         this.isSetFace = true;
       }
