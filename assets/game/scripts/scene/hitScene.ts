@@ -4,6 +4,7 @@ import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE
 const { ccclass, property } = _decorator;
 import { datas, Hit } from '../data/Hit';
 import { PlayEffect } from '../component/PlayEffect';
+import { getStorage } from '../common/adaptor';
 
 class HitInfo {
     times: number;
@@ -43,6 +44,14 @@ export class hitScene extends Component {
         this.timer = setInterval(() => {
             this.checkHit();
         }, 1000);
+
+        this.setName();
+    }
+
+    setName() {
+        let nameNode = this.node.parent.getChildByName("name-label");
+        let label = nameNode.getComponent(Label);
+        label.string = getStorage("name");
     }
 
     onDestroy() {

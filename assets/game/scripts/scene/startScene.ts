@@ -4,6 +4,7 @@ import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
 import { AudioMgr } from '../component/AudioMgr';
+import { getStorage, setStorage } from '../common/adaptor';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
@@ -15,6 +16,9 @@ export class startScene extends Component {
     private bgm: AudioClip = null;
 
     private isSetFace: boolean = false;
+
+    @property({type: [String]})
+    private nameList: string[] = [];
 
     @property(Prefab)
     private privacyDialog: Prefab = null;
@@ -43,10 +47,33 @@ export class startScene extends Component {
           // 如果需要主动弹窗见wx.requirePrivacyAuthorize
           console.log("onNeedPrivacyAuthorization");
           resolve({ event: 'agree' });
-        });   
+        });
+
+        wx.showShareMenu({
+          menus: ['shareAppMessage', 'shareTimeline']
+        })
       }
 
       this.node.on("onRich", this.onRich, this);
+      this.setName();
+    }
+
+    setName() {
+      let nameNode = this.node.getChildByName("name");
+      let label = nameNode.getComponent(Label);
+
+      let name = getStorage("name");
+      console.log("load name", name);
+      if (name) {
+        label.string = name;
+        return;
+      }
+
+      if (label.string === "") {
+        let randomIndex = Math.floor(Math.random() * this.nameList.length);
+        label.string = this.nameList[randomIndex];
+        setStorage("name", label.string);
+      }
     }
 
 
