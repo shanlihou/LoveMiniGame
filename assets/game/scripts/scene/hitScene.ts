@@ -15,7 +15,7 @@ class HitInfo {
 export class hitScene extends Component {
 
     private hitType: number = -1;
-    private hitMap: Map<number, HitInfo> = new Map();
+    private hitMap: Map<string, HitInfo> = new Map();
     private timer: number = 0;
     private msgTimer: number = 0;
     private isPushToilet: boolean = false;
@@ -104,6 +104,10 @@ export class hitScene extends Component {
     update(deltaTime: number) {
     }
 
+    getHitKey(hitType: number, region: number) {
+        return `${hitType}-${region}`;
+    }
+
     onHit(region: number) {
         console.log('onHit', region);
         if (this.isPushToilet) {
@@ -118,8 +122,9 @@ export class hitScene extends Component {
         playEffect.playHitEffect(this.hitType - 1);
 
         let nextHitTime = 0;
-        if (this.hitMap.has(this.hitType)) {
-            let curHitInfo = this.hitMap.get(this.hitType);
+        let hitKey = this.getHitKey(this.hitType, region);
+        if (this.hitMap.has(hitKey)) {
+            let curHitInfo = this.hitMap.get(hitKey);
             nextHitTime = curHitInfo.times + 1;
         }
         else {
@@ -136,13 +141,13 @@ export class hitScene extends Component {
             if (nextHitTime != datas[i].times) {
                 continue;
             }
-            this.hitMap.set(this.hitType, {
-                times: nextHitTime,
-                lastHitTime: new Date()
-            });
             this.doAction(datas[i]);
-            return;
+            break;
         }
+        this.hitMap.set(hitKey, {
+            times: nextHitTime,
+            lastHitTime: new Date()
+        });
     }
 
     toiletClick() {

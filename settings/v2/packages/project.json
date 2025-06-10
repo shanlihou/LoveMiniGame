@@ -5,5 +5,11 @@
       "width": 720,
       "height": 1280
     }
-  }
+  },
+  "layer": [
+    {
+      "name": "prt",
+      "value": 1
+    }
+  ]
 }

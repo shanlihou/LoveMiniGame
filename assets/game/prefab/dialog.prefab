@@ -365,10 +365,10 @@
       "b": 255,
       "a": 255
     },
-    "_string": "拒绝",
+    "_string": "拒  绝",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 44.34375,
+    "_actualFontSize": 34.171875,
     "_fontSize": 30,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -675,8 +675,8 @@
       "__id__": 26
     },
     "_lineHeight": 40,
-    "_string": "在你使用《我爱工作》服务之前，请仔细阅读<on click=\"onPrivacyClicked\" param=\"\"><color=green>《我爱工作小程序隐私保护指引》</color></on>，如你同意该指引，请点击“同意”开始使用",
-    "_horizontalAlign": 1,
+    "_string": "       在使用《职场养成计划》服务之前，请仔细阅读<on click=\"onPrivacyClicked\" param=\"\"><color=green>《职场养成计划小程序隐私保护指引》</color></on>，若您同意该指引，请点击“同意”开始使用。",
+    "_horizontalAlign": 0,
     "_verticalAlign": 0,
     "_fontSize": 25,
     "_fontColor": {
@@ -902,10 +902,10 @@
       "b": 255,
       "a": 255
     },
-    "_string": "同意",
+    "_string": "同  意",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 44.34375,
+    "_actualFontSize": 34.171875,
     "_fontSize": 30,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1195,8 +1195,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 329.9720657703489,
-      "height": 50.400000000000006
+      "width": 329.9818351337448,
+      "height": 50.39999999999999
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1234,7 +1234,7 @@
     "_string": "游戏用户协议和隐私政策",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 44.34375,
+    "_actualFontSize": 34.171875,
     "_fontSize": 30,
     "_fontFamily": "Arial",
     "_lineHeight": 40,

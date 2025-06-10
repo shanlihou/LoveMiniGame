@@ -16,7 +16,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: null,
-        music: 1,
+        music: null,
         msg: "扣你绩效",
     },
     {
@@ -26,7 +26,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: null,
-        music: 2,
+        music: 1,
         msg: "到我办公室来一下",
     },
     {
@@ -36,7 +36,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: 3,
-        music: 3,
+        music: null,
         msg: "下班前给我",
     },
     {
@@ -46,7 +46,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: 3,
-        music: 4,
+        music: null,
         msg: "今天必须给我出方案",
     },
     {
@@ -56,7 +56,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: 2,
         faceMorph: 3,
-        music: 5,
+        music: null,
         msg: "别动手动脚",
     },
     {
@@ -76,7 +76,7 @@ export const datas: Hit[] = [
         times: 4,
         sticker: 2,
         faceMorph: null,
-        music: 5,
+        music: 1,
         msg: "你是不是喜欢我",
     },
     {
@@ -86,7 +86,7 @@ export const datas: Hit[] = [
         times: 4,
         sticker: 2,
         faceMorph: null,
-        music: 5,
+        music: 6,
         msg: "你是不是喜欢我",
     },
     {
@@ -96,7 +96,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: 3,
-        music: 5,
+        music: 4,
         msg: "今天必须给我出方案",
     },
     {
@@ -106,7 +106,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: 3,
-        music: 5,
+        music: null,
         msg: "上班时间玩游戏",
     },
     {
@@ -116,7 +116,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: 3,
-        music: 5,
+        music: null,
         msg: "6点开个会",
     },
     {
@@ -126,7 +126,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: 3,
-        music: 5,
+        music: null,
         msg: "下班开会别迟到",
     },
     {
@@ -146,7 +146,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: 6,
-        music: 5,
+        music: null,
         msg: "别动手动脚",
     },
     {
@@ -156,7 +156,7 @@ export const datas: Hit[] = [
         times: 4,
         sticker: 2,
         faceMorph: null,
-        music: 5,
+        music: 1,
         msg: "你是不是喜欢我",
     },
     {
@@ -176,7 +176,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: 4,
         faceMorph: 6,
-        music: 5,
+        music: null,
         msg: "你食不食油饼？",
     },
     {
@@ -186,7 +186,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: 4,
         faceMorph: 6,
-        music: 5,
+        music: null,
         msg: "你食不食油饼？",
     },
     {
@@ -196,7 +196,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: 3,
         faceMorph: null,
-        music: 5,
+        music: 6,
         msg: "你看我像什么？",
     },
     {
@@ -206,7 +206,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: 6,
         faceMorph: null,
-        music: 5,
+        music: 2,
         msg: "不讲武德",
     },
     {
@@ -216,7 +216,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: 6,
         faceMorph: null,
-        music: 5,
+        music: 1,
         msg: "有点爽啊",
     },
     {
@@ -226,7 +226,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: 6,
         faceMorph: 4,
-        music: 5,
+        music: 3,
         msg: "爸爸我错了",
     },
     {
@@ -236,7 +236,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: 6,
         faceMorph: 4,
-        music: 5,
+        music: 3,
         msg: "我错了，我是孙子",
     },
     {
@@ -246,7 +246,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: 5,
-        music: 5,
+        music: null,
         msg: "不疼，完全不疼",
     },
     {
@@ -256,7 +256,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: 5,
-        music: 5,
+        music: 1,
         msg: "你没吃饭吧？",
     },
     {
@@ -266,7 +266,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: 1,
-        music: 5,
+        music: null,
         msg: "工作菜，打人也菜",
     },
     {
@@ -276,7 +276,7 @@ export const datas: Hit[] = [
         times: 4,
         sticker: null,
         faceMorph: 1,
-        music: 5,
+        music: 4,
         msg: "再打我可翻脸了",
     },
     {
@@ -286,7 +286,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: 5,
         faceMorph: 3,
-        music: 5,
+        music: null,
         msg: "好好说，别打脸",
     },
     {
@@ -296,7 +296,7 @@ export const datas: Hit[] = [
         times: 6,
         sticker: 5,
         faceMorph: 3,
-        music: 5,
+        music: 2,
         msg: "我错了还不行吗",
     },
     {
@@ -306,7 +306,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: 5,
-        music: 5,
+        music: 6,
         msg: "不疼，完全不疼",
     },
     {
@@ -326,7 +326,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: 2,
-        music: 5,
+        music: null,
         msg: "工作菜，打人也菜",
     },
     {
@@ -336,7 +336,7 @@ export const datas: Hit[] = [
         times: 4,
         sticker: null,
         faceMorph: 2,
-        music: 5,
+        music: null,
         msg: "再打我可翻脸了",
     },
     {
@@ -346,7 +346,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: 5,
         faceMorph: 4,
-        music: 5,
+        music: 4,
         msg: "好好说，别打脸",
     },
     {
@@ -356,7 +356,7 @@ export const datas: Hit[] = [
         times: 6,
         sticker: 5,
         faceMorph: 4,
-        music: 5,
+        music: 2,
         msg: "我错了还不行吗",
     },
     {
@@ -366,7 +366,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: 1,
         faceMorph: null,
-        music: 5,
+        music: null,
         msg: "同事对你有点意见",
     },
     {
@@ -376,7 +376,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: 9,
         faceMorph: null,
-        music: 5,
+        music: 6,
         msg: "工作菜，打人也菜",
     },
     {
@@ -386,7 +386,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: 8,
         faceMorph: null,
-        music: 5,
+        music: 3,
         msg: "我错了，我是孙子",
     },
     {
@@ -396,7 +396,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: 8,
         faceMorph: null,
-        music: 5,
+        music: 3,
         msg: "我错了，我是孙子",
     },
     {
@@ -406,7 +406,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: null,
-        music: 5,
+        music: null,
         msg: "你年终奖没了",
     },
     {
@@ -416,7 +416,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: 5,
-        music: 5,
+        music: 4,
         msg: "再用点力",
     },
     {
@@ -426,7 +426,7 @@ export const datas: Hit[] = [
         times: 6,
         sticker: 6,
         faceMorph: 1,
-        music: 5,
+        music: null,
         msg: "这个月的绩效奖金没了",
     },
     {
@@ -436,7 +436,7 @@ export const datas: Hit[] = [
         times: 9,
         sticker: 6,
         faceMorph: 1,
-        music: 5,
+        music: 2,
         msg: "再打我喊人了啊",
     },
     {
@@ -446,7 +446,7 @@ export const datas: Hit[] = [
         times: 13,
         sticker: 4,
         faceMorph: 6,
-        music: 5,
+        music: 2,
         msg: "爸爸别打了",
     },
     {
@@ -456,7 +456,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: null,
-        music: 5,
+        music: 4,
         msg: "晚上加个班",
     },
     {
@@ -466,7 +466,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: 5,
-        music: 5,
+        music: null,
         msg: "你没有全勤了",
     },
     {
@@ -476,7 +476,7 @@ export const datas: Hit[] = [
         times: 4,
         sticker: 7,
         faceMorph: 2,
-        music: 5,
+        music: 1,
         msg: "我要报警",
     },
     {
@@ -486,7 +486,7 @@ export const datas: Hit[] = [
         times: 7,
         sticker: 7,
         faceMorph: 2,
-        music: 5,
+        music: 2,
         msg: "再打我喊人了啊",
     },
     {
@@ -496,7 +496,7 @@ export const datas: Hit[] = [
         times: 8,
         sticker: 4,
         faceMorph: 6,
-        music: 5,
+        music: 3,
         msg: "爸爸别打了",
     },
     {
@@ -506,7 +506,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: null,
-        music: 5,
+        music: 1,
         msg: "真舒服啊",
     },
     {
@@ -526,7 +526,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: null,
-        music: 5,
+        music: 1,
         msg: "还挺舒服啊",
     },
     {
@@ -546,7 +546,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: 5,
         faceMorph: null,
-        music: 5,
+        music: null,
         msg: "你看到我就上火",
     },
     {
@@ -556,7 +556,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: 5,
         faceMorph: null,
-        music: 5,
+        music: 2,
         msg: "好好说话，别打脸",
     },
     {
@@ -586,7 +586,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: 2,
         faceMorph: null,
-        music: 5,
+        music: 1,
         msg: "无齿之徒就是我",
     },
     {
@@ -596,7 +596,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: 2,
         faceMorph: null,
-        music: 5,
+        music: 1,
         msg: "有点暧昧",
     },
     {
@@ -606,7 +606,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: 8,
         faceMorph: null,
-        music: 5,
+        music: 2,
         msg: "脑瓜子嗡嗡的",
     },
     {
@@ -616,7 +616,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 2,
         msg: "哎呀我不行了",
     },
     {
@@ -626,7 +626,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "我也有今天",
     },
     {
@@ -636,7 +636,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: 2,
         faceMorph: null,
-        music: null,
+        music: 5,
         msg: "虽然你喜欢我，但是我不喜欢你",
     },
     {
@@ -646,7 +646,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: 2,
         faceMorph: null,
-        music: null,
+        music: 1,
         msg: "别动手动脚的，伦家害羞",
     },
     {
@@ -676,7 +676,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: 2,
         faceMorph: null,
-        music: null,
+        music: 5,
         msg: "别摸我",
     },
     {
@@ -696,7 +696,7 @@ export const datas: Hit[] = [
         times: 12,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 1,
         msg: "我就是皮厚",
     },
     {
@@ -716,7 +716,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 5,
         msg: "别动手动脚的",
     },
     {
@@ -736,7 +736,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "别动我的秀发",
     },
     {
@@ -746,7 +746,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "再动假发掉了",
     },
     {
@@ -756,7 +756,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 5,
         msg: "赔我假发",
     },
     {
@@ -766,7 +766,7 @@ export const datas: Hit[] = [
         times: 1,
         sticker: 2,
         faceMorph: null,
-        music: null,
+        music: 1,
         msg: "伦家要害羞的",
     },
     {
@@ -776,7 +776,7 @@ export const datas: Hit[] = [
         times: 8,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "大家都很忙，就你情绪这么不稳定？",
     },
     {
@@ -786,7 +786,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "开个玩笑而已，你也太玻璃心了吧？",
     },
     {
@@ -796,7 +796,7 @@ export const datas: Hit[] = [
         times: 6,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "你这抗压能力，怎么在职场生存啊？",
     },
     {
@@ -806,7 +806,7 @@ export const datas: Hit[] = [
         times: 8,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "加班这么久还没做完？效率也太低了！",
     },
     {
@@ -816,7 +816,7 @@ export const datas: Hit[] = [
         times: 10,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "985毕业就这水平？狗都比你会做表！",
     },
     {
@@ -846,7 +846,7 @@ export const datas: Hit[] = [
         times: 8,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "实习生也配有意见？端茶倒水是你的福气！",
     },
     {
@@ -856,7 +856,7 @@ export const datas: Hit[] = [
         times: 2,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "午休吃东西？公司是你家食堂？",
     },
     {
@@ -866,7 +866,7 @@ export const datas: Hit[] = [
         times: 15,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "你一个外包怎么吃正编的零食？",
     },
     {
@@ -876,7 +876,7 @@ export const datas: Hit[] = [
         times: 4,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "这报告写得像小学生，重写10遍！",
     },
     {
@@ -906,7 +906,7 @@ export const datas: Hit[] = [
         times: 8,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 5,
         msg: "全部门聚餐没叫你？心里没点数？",
     },
     {
@@ -916,7 +916,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "谁帮TA就是跟我作对！",
     },
     {
@@ -926,7 +926,7 @@ export const datas: Hit[] = [
         times: 9,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "我上面有人，随便拿捏你！",
     },
     {
@@ -966,7 +966,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "这方案狗屁不通，你脑子进水了？",
     },
     {
@@ -976,7 +976,7 @@ export const datas: Hit[] = [
         times: 8,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "离了你公司照样转，别太把自己当回事！",
     },
     {
@@ -986,7 +986,7 @@ export const datas: Hit[] = [
         times: 10,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "你是靠关系进公司的吧？本事一点看不到！",
     },
     {
@@ -996,7 +996,7 @@ export const datas: Hit[] = [
         times: 4,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 1,
         msg: "你在狗叫什么？闭嘴干活！",
     },
     {
@@ -1004,7 +1004,7 @@ export const datas: Hit[] = [
         hitType: 3,
         pos: [3],
         times: 12,
-        sticker: null,
+        sticker: 12,
         faceMorph: null,
         music: null,
         msg: "信不信我让你在这行混不下去？",
@@ -1026,7 +1026,7 @@ export const datas: Hit[] = [
         times: 15,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "项目黄了全怪你！自己写辞职报告吧！",
     },
     {
@@ -1036,7 +1036,7 @@ export const datas: Hit[] = [
         times: 10,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "年轻人别计较工资，学不到东西吗？",
     },
     {
@@ -1046,7 +1046,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "年轻人就是思路活，不像我们老古董~",
     },
     {
@@ -1056,7 +1056,7 @@ export const datas: Hit[] = [
         times: 5,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 5,
         msg: "这方案写得真‘简洁’，客户肯定‘印象深刻’！",
     },
     {
@@ -1066,7 +1066,7 @@ export const datas: Hit[] = [
         times: 6,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 1,
         msg: "天天加班到最晚，难怪领导器重你呢！",
     },
     {
@@ -1076,7 +1076,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 5,
         msg: "30多还单身？别太挑，小心孤独终老~",
     },
     {
@@ -1086,7 +1086,7 @@ export const datas: Hit[] = [
         times: 3,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 4,
         msg: "穿假货也挺好，省钱嘛！",
     },
     {
@@ -1096,7 +1096,7 @@ export const datas: Hit[] = [
         times: 13,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 5,
         msg: "某些人效率低，害得全组加班！",
     },
     {
@@ -1106,7 +1106,7 @@ export const datas: Hit[] = [
         times: 7,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "早说你不懂啊，装什么大尾巴狼！",
     },
     {
@@ -1126,7 +1126,7 @@ export const datas: Hit[] = [
         times: 20,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "我是废物！垃圾！你说得对！",
     },
     {
@@ -1136,7 +1136,7 @@ export const datas: Hit[] = [
         times: 25,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 6,
         msg: "我狗都不如！汪两声你消消气？",
     },
     {
@@ -1146,7 +1146,7 @@ export const datas: Hit[] = [
         times: 25,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 2,
         msg: "我给您磕头！当屁放了我吧！",
     },
     {
@@ -1156,7 +1156,7 @@ export const datas: Hit[] = [
         times: 15,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 2,
         msg: "你眼神太吓人了！我…我腿软！",
     },
     {
@@ -1164,9 +1164,9 @@ export const datas: Hit[] = [
         hitType: 5,
         pos: [1],
         times: 22,
-        sticker: null,
+        sticker: 11,
         faceMorph: null,
-        music: null,
+        music: 3,
         msg: "别打了！我昨晚做噩梦都是你！",
     },
     {
@@ -1176,7 +1176,7 @@ export const datas: Hit[] = [
         times: 10,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 3,
         msg: "我抽自己耳光！不劳您动手，让您解气行吗？",
     },
     {
@@ -1186,7 +1186,7 @@ export const datas: Hit[] = [
         times: 10,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 3,
         msg: "您才是我贵人！以前我有眼无珠！",
     },
     {
@@ -1196,7 +1196,7 @@ export const datas: Hit[] = [
         times: 25,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 3,
         msg: "我帮您做牛做马！只求放过我！",
     },
     {
@@ -1206,7 +1206,7 @@ export const datas: Hit[] = [
         times: 8,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 3,
         msg: "求你别打了！我都被打得像小丑了！",
     },
     {
@@ -1214,9 +1214,9 @@ export const datas: Hit[] = [
         hitType: 5,
         pos: [9],
         times: 20,
-        sticker: null,
+        sticker: 13,
         faceMorph: null,
-        music: null,
+        music: 3,
         msg: "我不该PUA你...其实我是怕你比我优秀！",
     },
     {
@@ -1226,7 +1226,7 @@ export const datas: Hit[] = [
         times: 15,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 2,
         msg: "骂你是想掩盖我无能...你比我强十倍！",
     },
     {
@@ -1236,17 +1236,137 @@ export const datas: Hit[] = [
         times: 25,
         sticker: null,
         faceMorph: null,
-        music: null,
+        music: 2,
         msg: "您打我是我的荣幸，但是我太贱了，不配拥有，饶了我吧",
     },
     {
         ID: 124,
         hitType: 4,
         pos: [3],
-        times: 10,
-        sticker: null,
+        times: 15,
+        sticker: 12,
+        faceMorph: null,
+        music: 3,
+        msg: "别打了，再打就没人样了！",
+    },
+    {
+        ID: 125,
+        hitType: 2,
+        pos: [9],
+        times: 25,
+        sticker: 13,
+        faceMorph: null,
+        music: 3,
+        msg: "小的有眼不识泰山！",
+    },
+    {
+        ID: 126,
+        hitType: 2,
+        pos: [10],
+        times: 22,
+        sticker: 14,
+        faceMorph: null,
+        music: 3,
+        msg: "之前的事情都是我的错，您大人有大量！",
+    },
+    {
+        ID: 127,
+        hitType: 4,
+        pos: [9],
+        times: 18,
+        sticker: 13,
+        faceMorph: null,
+        music: 2,
+        msg: "我给您磕一个！",
+    },
+    {
+        ID: 128,
+        hitType: 4,
+        pos: [10],
+        times: 15,
+        sticker: 14,
         faceMorph: null,
         music: null,
-        msg: "别打了，再打就没人样了！",
+        msg: "这个不是很简单的吗？",
+    },
+    {
+        ID: 129,
+        hitType: 5,
+        pos: [10],
+        times: 18,
+        sticker: 14,
+        faceMorph: null,
+        music: 2,
+        msg: "求求你放了我吧！",
+    },
+    {
+        ID: 130,
+        hitType: 2,
+        pos: [3],
+        times: 15,
+        sticker: 12,
+        faceMorph: null,
+        music: 6,
+        msg: "发生这种事情大家都不想的",
+    },
+    {
+        ID: 131,
+        hitType: 5,
+        pos: [3],
+        times: 17,
+        sticker: 12,
+        faceMorph: null,
+        music: 6,
+        msg: "大家都有责任",
+    },
+    {
+        ID: 132,
+        hitType: 3,
+        pos: [9],
+        times: 22,
+        sticker: 12,
+        faceMorph: null,
+        music: 2,
+        msg: "这领导给你当！",
+    },
+    {
+        ID: 133,
+        hitType: 3,
+        pos: [10],
+        times: 22,
+        sticker: 12,
+        faceMorph: null,
+        music: 2,
+        msg: "年终奖翻倍！",
+    },
+    {
+        ID: 134,
+        hitType: 4,
+        pos: [3],
+        times: 8,
+        sticker: 10,
+        faceMorph: null,
+        music: 6,
+        msg: "要多从自己身上找原因",
+    },
+    {
+        ID: 135,
+        hitType: 5,
+        pos: [3],
+        times: 25,
+        sticker: 10,
+        faceMorph: null,
+        music: 6,
+        msg: "给你涨工资",
+    },
+    {
+        ID: 136,
+        hitType: 3,
+        pos: [1],
+        times: 10,
+        sticker: 11,
+        faceMorph: null,
+        music: null,
+        msg: "心里没点数吗？",
     },
 ]
