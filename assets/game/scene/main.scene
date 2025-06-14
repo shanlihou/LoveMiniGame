@@ -3003,7 +3003,7 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -240.8,
+      "x": -676.771,
       "y": -544.307,
       "z": 0
     },
@@ -3183,7 +3183,7 @@
         "__id__": 120
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 124

@@ -17,6 +17,7 @@ if(typeof wx === 'undefined'){
 }else{
     console.log("微信环境");
 }
+// 这里打印出当前场景名称
 assetManager.loadBundle("game",(err,bundle)=>{
     console.log("加载bundle1", err);
     console.log("加载bundle2", bundle);

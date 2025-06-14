@@ -4,6 +4,10 @@ const { ccclass, property } = _decorator;
 
 @ccclass('Zoom')
 export class Zoom extends Component {
+
+    @property(Boolean)
+    public enableZoom: boolean = false;
+
     private startDistance: number = 0;
     private startScale: number = 1;
     private minScale: number = 0.5;  // 最小缩放比例
@@ -45,6 +49,10 @@ export class Zoom extends Component {
     
     // 触摸开始
     private onTouchStart(event: EventTouch) {
+        if (!this.enableZoom) {
+            return;
+        }
+
         const touches = event.getTouches();
         console.log("onTouchStart", touches.length);
         if (touches.length >= 2) {
@@ -59,6 +67,10 @@ export class Zoom extends Component {
     
     // 触摸移动
     private onTouchMove(event: EventTouch) {
+        if (!this.enableZoom) {
+            return;
+        }
+
         const touches = event.getTouches();
         console.log("onTouchMove", touches.length);
         if (touches.length >= 2) {
@@ -102,6 +114,10 @@ export class Zoom extends Component {
     
     // 触摸结束
     private onTouchEnd(event: EventTouch) {
+        if (!this.enableZoom) {
+            return;
+        }
+        
         const touches = event.getTouches();
         console.log("onTouchEnd", touches.length);
         this.startDistance = 0;

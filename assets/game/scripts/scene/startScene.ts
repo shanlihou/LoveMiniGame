@@ -5,6 +5,7 @@ import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
 import { AudioMgr } from '../component/AudioMgr';
 import { getStorage, setStorage } from '../common/adaptor';
+import { Zoom } from '../component/Zoom';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
@@ -56,6 +57,15 @@ export class startScene extends Component {
 
       this.node.on("onRich", this.onRich, this);
       this.setName();
+
+      if (typeof wx == 'undefined') {
+        let enterEditButton = this.node.getChildByName("enter-edit");
+        enterEditButton.active = true;
+      }
+    }
+
+    enterEdit() {
+      director.loadScene("edit");
     }
 
     setName() {
@@ -215,6 +225,9 @@ export class startScene extends Component {
       if (spriteFrame) {
         this.isSetFace = true;
       }
+
+      let zoom = child.getComponent(Zoom);
+      zoom.enableZoom = true;
     }
 
     loadRemoteImage(url: string) {
