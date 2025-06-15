@@ -11,15 +11,23 @@ class HitInfo {
     lastHitTime: Date;
 }
 
+enum HitState {
+    NORMAL,
+    TOILET,
+    SHAKING
+}
+
 @ccclass('hitScene')
 export class hitScene extends Component {
+    @property(Node)
+    private backgroundNode: Node = null;
 
     private hitType: number = -1;
     private hitMap: Map<string, HitInfo> = new Map();
     private timer: number = 0;
     private msgTimer: number = 0;
-    private isPushToilet: boolean = false;
-    
+    private hitState: HitState = HitState.NORMAL;
+
     start() {
         let headMask = this.node.getChildByName('head-mask');
         let child = headMask.getChildByName("add-head");
@@ -110,7 +118,7 @@ export class hitScene extends Component {
 
     onHit(region: number) {
         console.log('onHit', region);
-        if (this.isPushToilet) {
+        if (this.hitState != HitState.NORMAL) {
             return;
         }
 
@@ -148,19 +156,23 @@ export class hitScene extends Component {
             times: nextHitTime,
             lastHitTime: new Date()
         });
+
+        this.shake();
     }
 
     toiletClick() {
         console.log('toilet click')
-        if (this.isPushToilet) {
+        if (this.hitState != HitState.NORMAL) {
             return;
         }
 
-        this.isPushToilet = true;
+        this.hitState = HitState.TOILET;
         if (this.msgTimer) {
             clearTimeout(this.msgTimer);
             this.msgTimer = 0;
         }
+        let msgNode = this.node.getChildByName("pop-msg");
+        msgNode.active = false;
 
         let playEffect = this.node.getComponent(PlayEffect);
         playEffect.playRush();
@@ -187,10 +199,12 @@ export class hitScene extends Component {
         const backDelay = 1;
         const backRotation = tween(node).by(backDelay, { angle: backDelay * 720 });
         const backMove = tween(node).to(backDelay, { position: originPosition, scale: new Vec3(1, 1, 1) });
-        spawnAction.delay(1).parallel(backRotation, backMove).call(() => {
+        spawnAction.delay(1).call(() => {
+            playEffect.playRush2();
+        }).parallel(backRotation, backMove).call(() => {
             node.setPosition(restorePostion);
             node.setScale(restoreScale);
-            this.isPushToilet = false;
+            this.hitState = HitState.NORMAL;
         });
         // 执行动作
         spawnAction.start();
@@ -275,5 +289,28 @@ export class hitScene extends Component {
     onToggleButtonEnable(hitType: number, isToggle: boolean) {
         console.log('onToggleButtonEnable', hitType, isToggle);
         this.hitType = isToggle ? hitType : -1;
+    }
+
+    shake() {
+        this.hitState = HitState.SHAKING;
+        let nodes = [this.backgroundNode, this.node];
+        let actions = [];
+        let delay = 0.05;
+        for (let node of nodes) {
+            let act = tween(node)
+            .to(delay, { position: new Vec3(10, 0, 0) })
+            .to(delay, { position: new Vec3(-10, -10, 0) })
+            .to(delay, { position: new Vec3(-10, 10, 0) })
+            .to(delay, { position: new Vec3(10, -10, 0) })
+            .to(delay, { position: new Vec3(0, 10, 0) })
+            actions.push(act);
+        }
+
+        tween(this.node)
+            .parallel(actions[0], actions[1])
+            .call(() => {
+                this.hitState = HitState.NORMAL;
+            })
+            .start();
     }
 }

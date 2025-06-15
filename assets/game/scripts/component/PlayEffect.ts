@@ -6,6 +6,9 @@ export class PlayEffect extends Component {
     @property(AudioClip)
     private rush: AudioClip = null;
 
+    @property(AudioClip)
+    private rush2: AudioClip = null;
+
     @property({ type: [AudioClip]})
     private hitEffectList: AudioClip[] = [];
 
@@ -23,6 +26,11 @@ export class PlayEffect extends Component {
     public playRush() {
         let audioSource = this.node.getComponent(AudioSource);
         audioSource.playOneShot(this.rush);
+    }
+
+    public playRush2() {
+        let audioSource = this.node.getComponent(AudioSource);
+        audioSource.playOneShot(this.rush2);
     }
 
     public playHitEffect(index: number) {

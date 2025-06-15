@@ -33,3 +33,7 @@ export function uint8ArrayToBase64(uint8Array: Uint8Array): string {
   
     return output;
   }
+
+  export function isWx() {
+    return typeof wx !== 'undefined';
+  }

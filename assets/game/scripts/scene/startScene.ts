@@ -6,6 +6,7 @@ import { ClickRich } from '../component/ClickRich';
 import { AudioMgr } from '../component/AudioMgr';
 import { getStorage, setStorage } from '../common/adaptor';
 import { Zoom } from '../component/Zoom';
+import { isWx } from '../common/utils';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
@@ -36,7 +37,7 @@ export class startScene extends Component {
       GlobalData.instance.facePos = new Vec2(addHead.position.x, addHead.position.y);
       console.log("GlobalData.instance.facePos", GlobalData.instance.facePos);
 
-      if (typeof wx !== 'undefined') {
+      if (isWx()) {
         wx.onNeedPrivacyAuthorization(resolve => {
           // ------ 自定义设置逻辑 ------ 
           // TODO：开发者弹出自定义的隐私弹窗（如果是勾选样式，开发者应在此实现自动唤出隐私勾选页面）
@@ -58,7 +59,7 @@ export class startScene extends Component {
       this.node.on("onRich", this.onRich, this);
       this.setName();
 
-      if (typeof wx == 'undefined') {
+      if (!isWx()) {
         let enterEditButton = this.node.getChildByName("enter-edit");
         enterEditButton.active = true;
       }
@@ -203,7 +204,7 @@ export class startScene extends Component {
     }
 
     takePhoto() {
-      if (typeof wx === 'undefined') {
+      if (!isWx()) {
         this.loadPrivacyDialog();
         // this.takePhotoDebug();
       } else {
