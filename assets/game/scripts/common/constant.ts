@@ -27,3 +27,14 @@ export const FACE_INIT_SIZE = new Vec2(800, 800);
 
 export const COLOR_GRAY = new Color('#6d6d6d');
 export const COLOR_WHITE = new Color('#FFFFFF');
+
+export const GONG_DE_MAIN_WEIGHTS = [80, 19, 1];
+export const GONG_DE_VALUES = [
+    [1, 2, 3, 4, 5],
+    [10, 20, 25, 29, 38, 49, 62, 110, 120],
+    [199, 250]
+];
+
+export const STORAGE_KEY_SUM_GONGDE = 'sumGongDe';
+export const STORAGE_KEY_TIMES = 'times';
+export const STORAGE_KEY_ONCE_MAX_GONGDE = 'onceMaxGongDe';

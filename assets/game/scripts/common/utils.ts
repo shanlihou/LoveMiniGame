@@ -37,3 +37,13 @@ export function uint8ArrayToBase64(uint8Array: Uint8Array): string {
   export function isWx() {
     return typeof wx !== 'undefined';
   }
+
+  export function randomWeighted(weights: number[]) {
+    const total = weights.reduce((a, b) => a + b, 0);
+    const random = Math.random() * total;
+    let sum = 0;
+    for (let i = 0; i < weights.length; i++) {
+      sum += weights[i];
+      if (random <= sum) return i;
+    }
+  }
