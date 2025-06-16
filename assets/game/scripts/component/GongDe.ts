@@ -1,15 +1,15 @@
-import { _decorator, Component } from 'cc';
+import { _decorator, Color, Component, instantiate, Label, Node, Prefab, tween, UIOpacity, Vec3} from 'cc';
 import { GONG_DE_MAIN_WEIGHTS, GONG_DE_VALUES, STORAGE_KEY_ONCE_MAX_GONGDE, STORAGE_KEY_SUM_GONGDE, STORAGE_KEY_TIMES } from '../common/constant';
 import { randomWeighted } from '../common/utils';
-import { getStorage, setStorage } from '../common/adaptor';
+import { getStorage, getStorageNumber, setStorage } from '../common/adaptor';
 
 const { ccclass, property } = _decorator;
 
 @ccclass('GongDe')
 export class GongDe extends Component {
-    private sumGongDe = 0;
-    private times = 0;
-    private onceMaxGongDe = 0;
+    private sumGongDe: number = 0;
+    private times: number = 0;
+    private onceMaxGongDe: number = 0;
 
     @property(Label)
     private sumGongDeLabel: Label = null;
@@ -20,48 +20,63 @@ export class GongDe extends Component {
     @property(Label)
     private onceMaxGongDeLabel: Label = null;
 
+    @property(Prefab)
+    private gongDePrefab: Prefab = null;
+
     start() {
     }
-
     showGongDeMsg(gongDe: number) {
-        const newNode = new Node('gongDeMsg');
+        // Create a new node for gongde message
+        const newNode = instantiate(this.gongDePrefab);
         
-        // 2. 添加Label组件并设置文本
-        const label = newNode.addComponent(Label);
-        label.string = "Hello Cocos!";
-        label.fontSize = 40;
-        label.color = new Color(255, 255, 255); // 白色文字
+        // Add Label component and set text
+        const label = newNode.getComponent(Label);
+        label.string = `功德 - ${gongDe}`;
         
         // 3. 添加UIOpacity组件控制透明度
-        newNode.addComponent(UIOpacity);
-        
         // 4. 将新节点添加到当前节点下
-        this.node.addChild(newNode);
+        this.node.parent.addChild(newNode);
         
         // 5. 设置初始位置（屏幕顶部）
-        newNode.setPosition(0, 500);
         
         // 6. 执行动画
-        this.playAnimation(newNode);
+        this.playAnimation(newNode, label);
     }
 
-    playAnimation(newNode: Node) {
+    playAnimation(newNode: Node, label: Label) {
         // 初始状态：完全透明
-        targetNode.getComponent(UIOpacity).opacity = 0;
-        
+        // newNode.getComponent(UIOpacity).opacity = 0;
         // 使用Tween实现动画
-        tween(targetNode)
+        let start = 380;
+        let end = 700;
+        newNode.setPosition(0, start);
+        let alpha = 200;
+        let r = label.color.r;
+        let g = label.color.g;
+        let b = label.color.b;
+        tween(newNode)
             // 第一阶段：1秒内渐显并下移
             .to(1, {
-                position: new Vec3(0, 200, 0),  // 移动到中间位置
-                opacity: 255                    // 完全不透明
-            }, { easing: 'sineOut' })           // 缓动效果：先快后慢
-            
+                position: new Vec3(0, (end + start) / 2, 0),  // 移动到中间位置
+                // opacity: 255                    // 完全不透明
+            }, 
+            { 
+                easing: 'sineOut',
+                onUpdate: (target, ratio) => {
+                    label.color = new Color(r, g, b, alpha * ratio);
+                }
+            })           // 缓动效果：先快后慢
             // 第二阶段：1秒后继续下移并渐隐
             .to(1, {
-                position: new Vec3(0, -100, 0), // 移动到底部
-                opacity: 0                      // 完全透明
-            }, { easing: 'sineIn' })            // 缓动效果：先慢后快
+                position: new Vec3(0, end, 0), // 移动到底部
+                // opacity: 0                      // 完全透明
+            }, 
+            { 
+                easing: 'sineIn',
+                onUpdate: (target, ratio) => {
+                    label.color = new Color(r, g, b, alpha * (1 - ratio));
+                }
+            })            // 缓动效果：先慢后快
             .call(() => {
                 newNode.destroy();
             })
@@ -69,13 +84,13 @@ export class GongDe extends Component {
     }
 
     onLoad() {
-        this.sumGongDe = getStorage(STORAGE_KEY_SUM_GONGDE);
-        this.times = getStorage(STORAGE_KEY_TIMES);
-        this.onceMaxGongDe = getStorage(STORAGE_KEY_ONCE_MAX_GONGDE);
+        this.sumGongDe = getStorageNumber(STORAGE_KEY_SUM_GONGDE);
+        this.times = getStorageNumber(STORAGE_KEY_TIMES);
+        this.onceMaxGongDe = getStorageNumber(STORAGE_KEY_ONCE_MAX_GONGDE);
 
         this.sumGongDeLabel.string = (- this.sumGongDe).toString();
         this.timesLabel.string = this.times.toString();
-        this.onceMaxGongDeLabel.string = (- this.onceMaxGongDe).toString();
+        this.onceMaxGongDeLabel.string = this.onceMaxGongDe.toString();
     }
 
     randomGongDe() : number{
@@ -94,11 +109,13 @@ export class GongDe extends Component {
 
         this.sumGongDeLabel.string = (- this.sumGongDe).toString();
         this.timesLabel.string = this.times.toString();
-        this.onceMaxGongDeLabel.string = (- this.onceMaxGongDe).toString();
+        this.onceMaxGongDeLabel.string = this.onceMaxGongDe.toString();
 
         setStorage(STORAGE_KEY_SUM_GONGDE, this.sumGongDe);
         setStorage(STORAGE_KEY_TIMES, this.times);
         setStorage(STORAGE_KEY_ONCE_MAX_GONGDE, this.onceMaxGongDe);
+
+        this.showGongDeMsg(gongDe);
     }
 
     update(deltaTime: number) {}

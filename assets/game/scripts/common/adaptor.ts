@@ -17,6 +17,11 @@ export function getStorage(key: string) {
     }
 }
 
+export function getStorageNumber(key: string) {
+    const value = getStorage(key);
+    return value ? Number(value) : 0;
+}
+
 export function removeStorage(key: string) {
     if (isWx()) {
         wx.removeStorageSync(key);

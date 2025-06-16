@@ -5,6 +5,7 @@ const { ccclass, property } = _decorator;
 import { datas, Hit } from '../data/Hit';
 import { PlayEffect } from '../component/PlayEffect';
 import { getStorage } from '../common/adaptor';
+import { GongDe } from '../component/GongDe';
 
 class HitInfo {
     times: number;
@@ -158,6 +159,9 @@ export class hitScene extends Component {
         });
 
         this.shake();
+
+        let gongDe = this.node.getComponent(GongDe);
+        gongDe.onHitTriggerGongDe();
     }
 
     toiletClick() {
@@ -184,15 +188,15 @@ export class hitScene extends Component {
 
 
         // 旋转动作 (RotateBy)
-        const delay = 3;
+        const delay = 2.5;
         const originPosition = node.position.clone();
-        const rotateAction = tween(node).by(delay, { angle: delay * 720 }); // 1秒内旋转360度
+        const rotateAction = tween(node).by(delay, { angle: delay * 720}); // 1秒内旋转360度
 
         // 缩放动作 (ScaleTo)
         // 同时执行旋转和缩放（并行动作）
         const moveAction = tween(node).to(delay, { position: new Vec3(0, -300, 0), scale: new Vec3(0.1, 0.1, 1)});
 
-        const spawnAction = tween(node).parallel(rotateAction, moveAction).call(() => {
+        const spawnAction = tween(node).delay(0.5).parallel(rotateAction, moveAction).call(() => {
             this.clearEffect();
         });
 
@@ -257,7 +261,7 @@ export class hitScene extends Component {
         this.msgTimer = setTimeout(() => {
             label.node.active = false;
             this.msgTimer = 0;
-        }, 2000);
+        }, 5000);
     }
 
     private showMessageBubbleDeprecated(message: string) {
