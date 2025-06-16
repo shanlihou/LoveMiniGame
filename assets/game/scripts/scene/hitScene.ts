@@ -190,7 +190,7 @@ export class hitScene extends Component {
         // 旋转动作 (RotateBy)
         const delay = 2.5;
         const originPosition = node.position.clone();
-        const rotateAction = tween(node).by(delay, { angle: delay * 720}); // 1秒内旋转360度
+        const rotateAction = tween(node).by(delay, { angle: delay * 864}); // 1秒内旋转360度
 
         // 缩放动作 (ScaleTo)
         // 同时执行旋转和缩放（并行动作）
