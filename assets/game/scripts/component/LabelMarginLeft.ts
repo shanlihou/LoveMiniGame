@@ -9,9 +9,16 @@ export class LabelMarginLeft extends Component {
     private leftPos: number = 0;
 
     start() {
+        // const ut = this.node.getComponent(UITransform);
+        // const posX = this.leftPos + ut.width / 2;
+        // this.node.setPosition(posX, this.node.position.y);
+    }
+
+    onLoad() {
         const ut = this.node.getComponent(UITransform);
         const posX = this.leftPos + ut.width / 2;
-        this.node.setPosition(posX, this.node.position.y);
+        console.log('onload', posX, ut.width);
+        // this.node.setPosition(posX, this.node.position.y);
     }
 
     setText(text: string) {
@@ -20,6 +27,7 @@ export class LabelMarginLeft extends Component {
 
         const ut = this.node.getComponent(UITransform);
         const posX = this.leftPos + ut.width / 2;
-        this.node.setPosition(posX, this.node.position.y);
+        console.log('setText', posX, ut.width);
+        // this.node.setPosition(posX, this.node.position.y);
     }
 }

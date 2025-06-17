@@ -7,6 +7,7 @@ import { AudioMgr } from '../component/AudioMgr';
 import { getStorage, setStorage } from '../common/adaptor';
 import { Zoom } from '../component/Zoom';
 import { isWx } from '../common/utils';
+import { DialogCtrl } from '../component/DialogCtrl';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')
@@ -24,6 +25,9 @@ export class startScene extends Component {
 
     @property(Prefab)
     private privacyDialog: Prefab = null;
+
+    @property(Prefab)
+    private editDialog: Prefab = null;
 
     getAddHead() {
       return this.node.getChildByName("head-mask").getChildByName("add-head");
@@ -239,6 +243,18 @@ export class startScene extends Component {
             }
             this.setSpriteFrameToDisplayPhoto(SpriteFrame.createWithImage(imageAsset));
         });
+    }
+
+    async onPressEdit() {
+      console.log("onPressEdit");
+      const dialog = instantiate(this.editDialog);
+      dialog.name = "editDialog";
+      this.node.addChild(dialog);
+      const dialogCtrl = dialog.getComponent(DialogCtrl);
+
+      let result = await dialogCtrl.show();
+      console.log("onPressEdit", result);
+      dialog.destroy();
     }
 }
 
