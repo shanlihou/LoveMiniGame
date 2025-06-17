@@ -2,6 +2,7 @@ import { _decorator, Color, Component, instantiate, Label, Node, Prefab, tween, 
 import { GONG_DE_MAIN_WEIGHTS, GONG_DE_VALUES, STORAGE_KEY_ONCE_MAX_GONGDE, STORAGE_KEY_SUM_GONGDE, STORAGE_KEY_TIMES } from '../common/constant';
 import { randomWeighted } from '../common/utils';
 import { getStorage, getStorageNumber, setStorage } from '../common/adaptor';
+import { LabelMarginLeft } from './LabelMarginLeft';
 
 const { ccclass, property } = _decorator;
 
@@ -83,14 +84,19 @@ export class GongDe extends Component {
             .start();                           // 开始动画
     }
 
+    setLabelNodeStr(label: Label, text: string) {
+        let lml = label.node.getComponent(LabelMarginLeft);
+        lml.setText(text);
+    }
+
     onLoad() {
         this.sumGongDe = getStorageNumber(STORAGE_KEY_SUM_GONGDE);
         this.times = getStorageNumber(STORAGE_KEY_TIMES);
         this.onceMaxGongDe = getStorageNumber(STORAGE_KEY_ONCE_MAX_GONGDE);
 
-        this.sumGongDeLabel.string = (- this.sumGongDe).toString();
-        this.timesLabel.string = this.times.toString();
-        this.onceMaxGongDeLabel.string = this.onceMaxGongDe.toString();
+        this.setLabelNodeStr(this.sumGongDeLabel, (- this.sumGongDe).toString());
+        this.setLabelNodeStr(this.timesLabel, this.times.toString());
+        this.setLabelNodeStr(this.onceMaxGongDeLabel, this.onceMaxGongDe.toString());
     }
 
     randomGongDe() : number{
@@ -107,9 +113,9 @@ export class GongDe extends Component {
         this.times++;
         this.onceMaxGongDe = Math.max(this.onceMaxGongDe, gongDe);
 
-        this.sumGongDeLabel.string = (- this.sumGongDe).toString();
-        this.timesLabel.string = this.times.toString();
-        this.onceMaxGongDeLabel.string = this.onceMaxGongDe.toString();
+        this.setLabelNodeStr(this.sumGongDeLabel, (- this.sumGongDe).toString());
+        this.setLabelNodeStr(this.timesLabel, this.times.toString());
+        this.setLabelNodeStr(this.onceMaxGongDeLabel, this.onceMaxGongDe.toString());
 
         setStorage(STORAGE_KEY_SUM_GONGDE, this.sumGongDe);
         setStorage(STORAGE_KEY_TIMES, this.times);

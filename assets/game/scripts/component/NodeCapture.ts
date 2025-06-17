@@ -94,44 +94,5 @@ export class NodeCapture extends Component {
             }
         });
     }
-
-    genEmoji2() {
-        if (wx == undefined) {
-            return;
-        }
-        const pixelBuff = this._renderTex.readPixels();
-        // Convert ArrayBuffer to base64 string
-        const bytes = new Uint8Array(pixelBuff);
-        const base64 = uint8ArrayToBase64(bytes);
-        const base64Data = `data:image/png;base64,${base64}`;
-
-        console.log('base64Data', base64Data);
-
-        wx.authorize({
-            scope: 'scope.writePhotosAlbum',   // 需要获取相册权限
-            success: (res)=>{     
-                // 将截图保存到相册中
-                wx.saveImageToPhotosAlbum({
-                    filePath: base64Data,
-                    success: (res)=>{
-                        console.log('图片保存成功', res);
-                        wx.showToast({
-                            title: '图片保存成功',
-                            icon: 'success',
-                            duration: 2000
-                        });
-                    },
-                    fail: (res)=>{
-                        console.log(res);
-                        console.log('图片保存失败');
-                    }
-                });
-            },
-     
-            fail: (res)=>{
-                console.log('授权失败');
-            }
-        });
-    }
 }
 
