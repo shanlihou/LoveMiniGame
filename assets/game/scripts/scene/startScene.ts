@@ -1,5 +1,5 @@
 import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate, AudioClip } from 'cc';
-import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE } from '../common/constant';
+import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, STORAGE_KEY_NAME } from '../common/constant';
 import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
@@ -61,7 +61,7 @@ export class startScene extends Component {
       }
 
       this.node.on("onRich", this.onRich, this);
-      this.setName();
+      this.loadName();
 
       if (!isWx()) {
         let enterEditButton = this.node.getChildByName("enter-edit");
@@ -73,11 +73,11 @@ export class startScene extends Component {
       director.loadScene("edit");
     }
 
-    setName() {
+    loadName() {
       let nameNode = this.node.getChildByName("name");
       let label = nameNode.getComponent(Label);
 
-      let name = getStorage("name");
+      let name = getStorage(STORAGE_KEY_NAME);
       console.log("load name", name);
       if (name) {
         label.string = name;
@@ -87,8 +87,19 @@ export class startScene extends Component {
       if (label.string === "") {
         let randomIndex = Math.floor(Math.random() * this.nameList.length);
         label.string = this.nameList[randomIndex];
-        setStorage("name", label.string);
+        setStorage(STORAGE_KEY_NAME, label.string);
       }
+    }
+
+    setName(name: string) {
+      if (name == "") {
+        return;
+      }
+
+      let nameNode = this.node.getChildByName("name");
+      let label = nameNode.getComponent(Label);
+      label.string = name;
+      setStorage(STORAGE_KEY_NAME, label.string);
     }
 
 
@@ -255,6 +266,12 @@ export class startScene extends Component {
       let result = await dialogCtrl.show();
       console.log("onPressEdit", result);
       dialog.destroy();
+
+      if (result.name != "") {
+        this.setName(result.name);
+      }
+
+
     }
 }
 
