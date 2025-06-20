@@ -15,8 +15,12 @@ export class GlobalData {
     public faceScale: number = 1;
 
     // init
-    public headMale: SpriteFrame = null;
-    public headFemale: SpriteFrame = null;
+    public bodyBackMale: SpriteFrame = null;
+    public bodyBackFemale: SpriteFrame = null;
     public bodyWithoutHeadMale: SpriteFrame = null;
     public bodyWithoutHeadFemale: SpriteFrame = null;
+    public bodyBackNoHeadMale: SpriteFrame = null;
+    public bodyBackNoHeadFemale: SpriteFrame = null;
+    public fullBodyMale: SpriteFrame = null;
+    public fullBodyFemale: SpriteFrame = null;
 }

@@ -1,6 +1,6 @@
 import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText, tween, Vec3, AudioSource } from 'cc';
 import { GlobalData } from '../common/globalData';
-import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE } from '../common/constant';
+import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_SEX } from '../common/constant';
 const { ccclass, property } = _decorator;
 import { datas, Hit } from '../data/Hit';
 import { PlayEffect } from '../component/PlayEffect';
@@ -22,6 +22,12 @@ enum HitState {
 export class hitScene extends Component {
     @property(Node)
     private backgroundNode: Node = null;
+
+    @property(Sprite)
+    private bodyNoHead: Sprite = null;
+
+    @property(Sprite)
+    private fullBody: Sprite = null;
 
     private hitType: number = -1;
     private hitMap: Map<string, HitInfo> = new Map();
@@ -55,6 +61,17 @@ export class hitScene extends Component {
         }, 1000);
 
         this.setName();
+    }
+
+    onLoad() {
+        let sex = Number(getStorage(STORAGE_KEY_SEX));
+        if (sex == SEX_FEMALE) {
+            this.bodyNoHead.spriteFrame = GlobalData.instance.bodyWithoutHeadFemale;
+            this.fullBody.spriteFrame = GlobalData.instance.fullBodyFemale;
+        } else {
+            this.bodyNoHead.spriteFrame = GlobalData.instance.bodyWithoutHeadMale;
+            this.fullBody.spriteFrame = GlobalData.instance.fullBodyMale;
+        }
     }
 
     setName() {

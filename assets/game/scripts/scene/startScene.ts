@@ -1,5 +1,5 @@
 import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate, AudioClip } from 'cc';
-import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, STORAGE_KEY_NAME } from '../common/constant';
+import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_NAME, STORAGE_KEY_SEX } from '../common/constant';
 import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
@@ -28,6 +28,12 @@ export class startScene extends Component {
 
     @property(Prefab)
     private editDialog: Prefab = null;
+
+    @property(Sprite)
+    private bodyBackgroud: Sprite = null;
+
+    @property(Sprite)
+    private bodyBackgroudNoHead: Sprite = null;
 
     getAddHead() {
       return this.node.getChildByName("head-mask").getChildByName("add-head");
@@ -67,6 +73,13 @@ export class startScene extends Component {
         let enterEditButton = this.node.getChildByName("enter-edit");
         enterEditButton.active = true;
       }
+    }
+
+    onLoad() {
+      console.log("startScene onLoad");
+      let sex = getStorage(STORAGE_KEY_SEX);
+      console.log("startScene onLoad sex", typeof(sex));
+      this.onSexReset(Number(sex));
     }
 
     enterEdit() {
@@ -271,7 +284,18 @@ export class startScene extends Component {
         this.setName(result.name);
       }
 
+      setStorage(STORAGE_KEY_SEX, result.sex);
+      this.onSexReset(result.sex);
+    }
 
+    onSexReset(sex: number) {
+      if (sex == SEX_FEMALE) {
+        this.bodyBackgroud.spriteFrame = GlobalData.instance.bodyBackFemale;
+        this.bodyBackgroudNoHead.spriteFrame = GlobalData.instance.bodyBackNoHeadFemale;
+      } else {
+        this.bodyBackgroud.spriteFrame = GlobalData.instance.bodyBackMale;
+        this.bodyBackgroudNoHead.spriteFrame = GlobalData.instance.bodyBackNoHeadMale;
+      }
     }
 }
 
