@@ -23,6 +23,9 @@ export class hitScene extends Component {
     @property(Node)
     private backgroundNode: Node = null;
 
+    @property(Node)
+    private regisonNode: Node = null;
+
     @property(Sprite)
     private bodyNoHead: Sprite = null;
 
@@ -72,6 +75,8 @@ export class hitScene extends Component {
             this.bodyNoHead.spriteFrame = GlobalData.instance.bodyWithoutHeadMale;
             this.fullBody.spriteFrame = GlobalData.instance.fullBodyMale;
         }
+
+        this.regisonNode.active = true;
     }
 
     setName() {

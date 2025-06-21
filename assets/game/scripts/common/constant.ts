@@ -42,6 +42,9 @@ export const STORAGE_KEY_TIMES = 'times';
 export const STORAGE_KEY_ONCE_MAX_GONGDE = 'onceMaxGongDe';
 export const STORAGE_KEY_NAME = 'name';
 export const STORAGE_KEY_SEX = 'sex';
+export const STORAGE_KEY_SAVE_HEAD = 'saveHead';
 
 export const SEX_MALE = 0;
 export const SEX_FEMALE = 1;
+
+export const SAVE_HEAD_NAME = 'save_head';

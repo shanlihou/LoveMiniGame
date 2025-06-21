@@ -1,5 +1,5 @@
 import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate, AudioClip } from 'cc';
-import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_NAME, STORAGE_KEY_SEX } from '../common/constant';
+import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, SAVE_HEAD_NAME, SEX_FEMALE, STORAGE_KEY_NAME, STORAGE_KEY_SAVE_HEAD, STORAGE_KEY_SEX } from '../common/constant';
 import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
@@ -80,6 +80,13 @@ export class startScene extends Component {
       let sex = getStorage(STORAGE_KEY_SEX);
       console.log("startScene onLoad sex", typeof(sex));
       this.onSexReset(Number(sex));
+
+      let isSave = getStorage(STORAGE_KEY_SAVE_HEAD)
+      console.log('is save', isSave, typeof(isSave));
+      if (isSave && isSave != 'undefined') {
+        console.log('load remote image', isSave);
+        this.loadRemoteImage(isSave);
+      }
     }
 
     enterEdit() {
@@ -138,6 +145,25 @@ export class startScene extends Component {
       });
     }
 
+    saveTempFile(tempFileName: string) {
+      // 获取 temp file 的后缀
+      const ext = tempFileName.split('.').pop();
+      let destPath = `${wx.env.USER_DATA_PATH}/${SAVE_HEAD_NAME}.${ext}`;
+
+      const fs = wx.getFileSystemManager()
+      fs.copyFile({
+        srcPath: tempFileName, 
+        destPath: destPath, 
+        success(res) {
+          console.log('copy success', res, destPath);
+          setStorage(STORAGE_KEY_SAVE_HEAD, destPath);
+        },
+        fail(res) {
+          console.log('copy failed:', res)
+        }
+      })
+    }
+
     takePhotoInWx() {
       let that = this;
       console.log("takePhotoInWx");
@@ -149,6 +175,7 @@ export class startScene extends Component {
             const tempFilePaths = res.tempFilePaths
             // 在这里处理选择的图片，例如显示在页面上
             console.log(tempFilePaths)
+            that.saveTempFile(tempFilePaths[0]);
             that.loadRemoteImage(tempFilePaths[0]);
           },
           fail(err) {
@@ -261,6 +288,7 @@ export class startScene extends Component {
 
     loadRemoteImage(url: string) {
         assetManager.loadRemote<ImageAsset>(url, (err, imageAsset) => {
+            console.log('loadRemoteImage', url, err, imageAsset);
             if (err) {
                 console.log(err);
                 return;

@@ -49,7 +49,7 @@ export class GongDe extends Component {
         // newNode.getComponent(UIOpacity).opacity = 0;
         // 使用Tween实现动画
         let start = 380;
-        let end = 700;
+        let end = 740;
         newNode.setPosition(0, start);
         let alpha = 200;
         let r = label.color.r;
