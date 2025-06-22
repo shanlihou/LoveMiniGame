@@ -2,6 +2,8 @@ import { RenderTexture } from "cc";
 import { SAVE_HEAD_NAME } from "./constant";
 import { isWx } from "./utils";
 
+// WeChat Mini Game type declarations
+declare const wx: any;
 
 export function setStorage(key: string, value: any) {
     if (isWx()) {
@@ -123,22 +125,50 @@ export function genEmoji(renderTex: RenderTexture, rate: number) {
     }
 
     const pixelBuff = renderTex.readPixels();
+    const width = renderTex.width;
+    const height = renderTex.height;
+    
+    // Calculate the height of the cropped image based on rate
+    const cropHeight = Math.floor(height * rate);
 
     const canvas = wx.createCanvas();
-    canvas.width = renderTex.width;  // 图片宽度
-    canvas.height = renderTex.height * rate; // 图片高度
+    canvas.width = width;  // 图片宽度
+    canvas.height = cropHeight; // 裁剪后的高度
     const ctx = canvas.getContext('2d');
 
-    // 创建 ImageData 并填充像素
-    const imageData = ctx.createImageData(renderTex.width, renderTex.height);
-    imageData.data.set(pixelBuff); // 填入 Uint8Array 数据
-    ctx.putImageData(imageData, 0, 0);
+    // Create ImageData for the full image first
+    const fullImageData = ctx.createImageData(width, height);
+    
+    // Flip the image vertically and copy pixels
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const sourceIndex = (y * width + x) * 4;
+            const targetIndex = ((height - 1 - y) * width + x) * 4;
+            
+            fullImageData.data[targetIndex] = pixelBuff[sourceIndex];     // R
+            fullImageData.data[targetIndex + 1] = pixelBuff[sourceIndex + 1]; // G
+            fullImageData.data[targetIndex + 2] = pixelBuff[sourceIndex + 2]; // B
+            fullImageData.data[targetIndex + 3] = pixelBuff[sourceIndex + 3]; // A
+        }
+    }
+    
+    // Put the full flipped image to canvas
+    ctx.putImageData(fullImageData, 0, 0);
+    
+    // Create a new canvas for the cropped image
+    const croppedCanvas = wx.createCanvas();
+    croppedCanvas.width = width;
+    croppedCanvas.height = cropHeight;
+    const croppedCtx = croppedCanvas.getContext('2d');
+    
+    // Draw only the top portion of the image based on rate
+    croppedCtx.drawImage(canvas, 0, 0, width, cropHeight, 0, 0, width, cropHeight);
 
-    const tempFilePath = canvas.toTempFilePathSync({
+    const tempFilePath = croppedCanvas.toTempFilePathSync({
         fileType: 'png',
         quality: 1, // 质量 0-1
-        destWidth: renderTex.width,
-        destHeight: renderTex.height
+        destWidth: width,
+        destHeight: cropHeight
         });
 
     console.log('tempFilePath', tempFilePath);
