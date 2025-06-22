@@ -3,6 +3,7 @@ import { GONG_DE_MAIN_WEIGHTS, GONG_DE_VALUES, STORAGE_KEY_ONCE_MAX_GONGDE, STOR
 import { randomWeighted } from '../common/utils';
 import { getStorage, getStorageNumber, setStorage } from '../common/adaptor';
 import { LabelMarginLeft } from './LabelMarginLeft';
+import { PlayEffect } from './PlayEffect';
 
 const { ccclass, property } = _decorator;
 
@@ -122,6 +123,10 @@ export class GongDe extends Component {
         setStorage(STORAGE_KEY_ONCE_MAX_GONGDE, this.onceMaxGongDe);
 
         this.showGongDeMsg(gongDe);
+
+        if (gongDe >= 50) {
+            this.node.getComponent(PlayEffect).playMuyu();
+        }
     }
 
     update(deltaTime: number) {}

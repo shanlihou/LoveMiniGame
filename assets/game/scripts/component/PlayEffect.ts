@@ -9,6 +9,9 @@ export class PlayEffect extends Component {
     @property(AudioClip)
     private rush2: AudioClip = null;
 
+    @property(AudioClip)
+    private muyu: AudioClip = null;
+
     @property({ type: [AudioClip]})
     private hitEffectList: AudioClip[] = [];
 
@@ -21,6 +24,11 @@ export class PlayEffect extends Component {
 
     update(deltaTime: number) {
         
+    }
+
+    public playMuyu() {
+        let audioSource = this.node.getComponent(AudioSource);
+        audioSource.playOneShot(this.muyu);
     }
 
     public playRush() {

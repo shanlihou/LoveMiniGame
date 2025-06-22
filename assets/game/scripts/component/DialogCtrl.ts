@@ -1,5 +1,6 @@
 import { _decorator, Component, EditBox, Label, Node, Toggle } from 'cc';
-import { SEX_FEMALE, SEX_MALE } from '../common/constant';
+import { SEX_FEMALE, SEX_MALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_NAME, STORAGE_KEY_SEX } from '../common/constant';
+import { getStorage, getStorageString } from '../common/adaptor';
 const { ccclass, property } = _decorator;
 
 class DialogResult {
@@ -35,7 +36,27 @@ export class DialogCtrl extends Component {
     @property(Toggle)
     private toggleMale: Toggle = null;
 
+    @property(Toggle)
+    private toggleFemale: Toggle = null;
+
     private resolvePromise: (value: DialogResult) => void;
+
+    onLoad() {
+        this.editName.string = getStorageString(STORAGE_KEY_NAME);
+        let sex = getStorage(STORAGE_KEY_SEX);
+        if (sex == SEX_MALE) {
+            this.toggleMale.isChecked = true;
+            this.toggleFemale.isChecked = false;
+        }
+        else {
+            this.toggleMale.isChecked = false;
+            this.toggleFemale.isChecked = true;
+        }
+
+        this.editDiyMsg1.string = getStorageString(STORAGE_KEY_DIY_MSG1);
+        this.editDiyMsg2.string = getStorageString(STORAGE_KEY_DIY_MSG2);
+        this.editDiyMsg3.string = getStorageString(STORAGE_KEY_DIY_MSG3);
+    }
 
     show(): Promise<DialogResult> {
         return new Promise((resolve) => {

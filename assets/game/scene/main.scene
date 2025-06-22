@@ -3989,6 +3989,10 @@
       "__uuid__": "f6b59fdb-5c13-4b74-af12-eb2610cf68ee",
       "__expectedType__": "cc.AudioClip"
     },
+    "muyu": {
+      "__uuid__": "a9cd5423-a91c-4605-8976-20c289b70c31",
+      "__expectedType__": "cc.AudioClip"
+    },
     "hitEffectList": [
       {
         "__uuid__": "adfee1a7-e90a-4835-8e46-756d4b1c7afc",
@@ -4071,6 +4075,7 @@
     "camera": {
       "__id__": 117
     },
+    "rate": 0.5,
     "_id": "ddRA5pgI9O8LOVUdwySD2H"
   },
   {
@@ -4133,7 +4138,7 @@
     "_prefab": null,
     "_lpos": {
       "__type__": "cc.Vec3",
-      "x": -676.771,
+      "x": -715.213,
       "y": -544.307,
       "z": 0
     },

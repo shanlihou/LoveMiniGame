@@ -1,5 +1,5 @@
 import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate, AudioClip } from 'cc';
-import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, SAVE_HEAD_NAME, SEX_FEMALE, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_NAME, STORAGE_KEY_SAVE_HEAD, STORAGE_KEY_SEX } from '../common/constant';
+import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, SAVE_HEAD_NAME, SEX_FEMALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_NAME, STORAGE_KEY_SAVE_HEAD, STORAGE_KEY_SEX } from '../common/constant';
 import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
@@ -243,6 +243,10 @@ export class startScene extends Component {
 
       setStorage(STORAGE_KEY_SEX, result.sex);
       this.onSexReset(result.sex);
+
+      setStorage(STORAGE_KEY_DIY_MSG1, result.diyMsg1);
+      setStorage(STORAGE_KEY_DIY_MSG2, result.diyMsg2);
+      setStorage(STORAGE_KEY_DIY_MSG3, result.diyMsg3);
     }
 
     onSexReset(sex: number) {

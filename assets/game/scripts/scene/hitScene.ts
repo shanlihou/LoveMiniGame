@@ -1,6 +1,6 @@
 import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText, tween, Vec3, AudioSource } from 'cc';
 import { GlobalData } from '../common/globalData';
-import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_SEX } from '../common/constant';
+import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_SEX } from '../common/constant';
 const { ccclass, property } = _decorator;
 import { datas, Hit } from '../data/Hit';
 import { PlayEffect } from '../component/PlayEffect';
@@ -132,7 +132,7 @@ export class hitScene extends Component {
             }
         }
     }
-    
+
     update(deltaTime: number) {
     }
 
@@ -203,7 +203,7 @@ export class hitScene extends Component {
 
         let playEffect = this.node.getComponent(PlayEffect);
         playEffect.playRush();
-        
+
         // 假设有一个节点 node，需要旋转并缩小
         const node = this.node;
         let restorePostion = node.position.clone();
@@ -213,11 +213,11 @@ export class hitScene extends Component {
         // 旋转动作 (RotateBy)
         const delay = 2.5;
         const originPosition = node.position.clone();
-        const rotateAction = tween(node).by(delay, { angle: delay * 864}); // 1秒内旋转360度
+        const rotateAction = tween(node).by(delay, { angle: delay * 864 }); // 1秒内旋转360度
 
         // 缩放动作 (ScaleTo)
         // 同时执行旋转和缩放（并行动作）
-        const moveAction = tween(node).to(delay, { position: new Vec3(0, -300, 0), scale: new Vec3(0.1, 0.1, 1)});
+        const moveAction = tween(node).to(delay, { position: new Vec3(0, -300, 0), scale: new Vec3(0.1, 0.1, 1) });
 
         const spawnAction = tween(node).delay(0.5).parallel(rotateAction, moveAction).call(() => {
             this.clearEffect();
@@ -250,6 +250,29 @@ export class hitScene extends Component {
         }
     }
 
+    getActionMsg(action: Hit): string {
+        if (action.diyMsg) {
+            let diyMsg = null;
+            switch (action.diyMsg) {
+                case 1:
+                    diyMsg = getStorage(STORAGE_KEY_DIY_MSG1);
+                    break;
+                case 2:
+                    diyMsg = getStorage(STORAGE_KEY_DIY_MSG2);
+                    break;
+                case 3:
+                    diyMsg = getStorage(STORAGE_KEY_DIY_MSG3);
+                    break;
+            }
+
+            if (diyMsg) {
+                return diyMsg;
+            }
+        }
+
+        return action.msg;
+    }
+
     doAction(action: Hit) {
         console.log('doAction', action.sticker);
         if (action.sticker != null) {
@@ -266,8 +289,9 @@ export class hitScene extends Component {
         }
 
         // 显示消息气泡
-        if (action.msg) {
-            this.showMessageBubble(action.msg);
+        let msg = this.getActionMsg(action);
+        if (msg) {
+            this.showMessageBubble(msg);
         }
     }
 
@@ -287,32 +311,6 @@ export class hitScene extends Component {
         }, 5000);
     }
 
-    private showMessageBubbleDeprecated(message: string) {
-        // 创建气泡节点
-        console.log('showMessageBubble', message);
-        const bubbleNode = new Node('message-bubble');
-        const label = bubbleNode.addComponent(Label);
-        label.string = message;
-        label.fontSize = 24;
-        label.color.fromHEX('#000000');
-        
-        // 设置气泡背景
-        // const sprite = bubbleNode.addComponent(Sprite);
-        // 这里需要设置气泡背景图片，暂时使用默认背景
-        
-        // 设置气泡位置（在头像上方）
-        const headNode = this.node.getChildByName("add-head");
-        bubbleNode.setPosition(headNode.position.x, headNode.position.y + 100);
-        
-        // 添加到场景中
-        this.node.addChild(bubbleNode);
-        
-        // 2秒后自动消失
-        this.scheduleOnce(() => {
-            bubbleNode.destroy();
-        }, 2);
-    }
-
     onToggleButtonEnable(hitType: number, isToggle: boolean) {
         console.log('onToggleButtonEnable', hitType, isToggle);
         this.hitType = isToggle ? hitType : -1;
@@ -325,11 +323,11 @@ export class hitScene extends Component {
         let delay = 0.05;
         for (let node of nodes) {
             let act = tween(node)
-            .to(delay, { position: new Vec3(10, 0, 0) })
-            .to(delay, { position: new Vec3(-10, -10, 0) })
-            .to(delay, { position: new Vec3(-10, 10, 0) })
-            .to(delay, { position: new Vec3(10, -10, 0) })
-            .to(delay, { position: new Vec3(0, 10, 0) })
+                .to(delay, { position: new Vec3(10, 0, 0) })
+                .to(delay, { position: new Vec3(-10, -10, 0) })
+                .to(delay, { position: new Vec3(-10, 10, 0) })
+                .to(delay, { position: new Vec3(10, -10, 0) })
+                .to(delay, { position: new Vec3(0, 10, 0) })
             actions.push(act);
         }
 

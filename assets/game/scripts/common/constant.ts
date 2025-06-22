@@ -46,6 +46,9 @@ export const STORAGE_KEY_SAVE_HEAD = 'saveHead';
 export const STORAGE_KEY_FACE_POSX = 'facePosX';
 export const STORAGE_KEY_FACE_POSY = 'facePosY';
 export const STORAGE_KEY_FACE_SCALE = 'faceScale';
+export const STORAGE_KEY_DIY_MSG1 = 'diyMsg1';
+export const STORAGE_KEY_DIY_MSG2 = 'diyMsg2';
+export const STORAGE_KEY_DIY_MSG3 = 'diyMsg3';
 
 
 export const SEX_MALE = 0;
