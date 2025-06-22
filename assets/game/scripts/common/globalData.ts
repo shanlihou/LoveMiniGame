@@ -11,8 +11,6 @@ export class GlobalData {
     }
 
     public faceSpriteFrame: SpriteFrame | null = null; // 存储跨场景的 SpriteFrame
-    public facePos: Vec2 = new Vec2(0, 0);
-    public faceScale: number = 1;
 
     // init
     public bodyBackMale: SpriteFrame = null;

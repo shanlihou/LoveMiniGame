@@ -1,10 +1,10 @@
 import { _decorator, Component, Node } from 'cc';
+import { openPrivacyContract } from '../common/adaptor';
 const { ccclass, property } = _decorator;
 
 @ccclass('ClickRich')
 export class ClickRich extends Component {
-    @property(Node)
-    public clickEvent: Node = null;
+    private resolvePromise: (value: boolean) => void;
 
     start() {
 
@@ -14,19 +14,25 @@ export class ClickRich extends Component {
         
     }
 
+    show(): Promise<boolean> {
+        return new Promise((resolve) => {
+            this.resolvePromise = resolve;
+        });
+    }
+
     onPrivacyClicked() {
         console.log("onPrivacyClicked");
-        this.clickEvent.emit("onRich", "rich");
+        openPrivacyContract();
     }
 
     onCancel() {
         console.log("onCancel");
-        this.clickEvent.emit("onRich", "cancel");
+        this.resolvePromise(false);
     }
 
     onConfirm() {
         console.log("onConfirm");
-        this.clickEvent.emit("onRich", "confirm");
+        this.resolvePromise(true);
     }
 }
 

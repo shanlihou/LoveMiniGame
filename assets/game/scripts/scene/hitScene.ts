@@ -1,10 +1,10 @@
 import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText, tween, Vec3, AudioSource } from 'cc';
 import { GlobalData } from '../common/globalData';
-import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_SEX } from '../common/constant';
+import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_SEX } from '../common/constant';
 const { ccclass, property } = _decorator;
 import { datas, Hit } from '../data/Hit';
 import { PlayEffect } from '../component/PlayEffect';
-import { getStorage } from '../common/adaptor';
+import { getStorage, getStorageNumber } from '../common/adaptor';
 import { GongDe } from '../component/GongDe';
 
 class HitInfo {
@@ -47,10 +47,11 @@ export class hitScene extends Component {
             // child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
             // let x = GlobalData.instance.facePos.x - headMask.position.x;
             // let y = GlobalData.instance.facePos.y - headMask.position.y;
-            let x = GlobalData.instance.facePos.x;
-            let y = GlobalData.instance.facePos.y;
+            let x = getStorageNumber(STORAGE_KEY_FACE_POSX);
+            let y = getStorageNumber(STORAGE_KEY_FACE_POSY);
             child.setPosition(x, y);
-            child.setScale(GlobalData.instance.faceScale, GlobalData.instance.faceScale);
+            let scale = getStorageNumber(STORAGE_KEY_FACE_SCALE);
+            child.setScale(scale, scale);
         }
         else {
             child.active = false;
