@@ -119,21 +119,15 @@ export function initPrivacAuth() {
     })
 }
 
-export function genEmoji(renderTex: RenderTexture, rate: number) {
+export function genEmoji(pixelBuff: Uint8Array, width: number, height: number) {
     if (!isWx()) {
         return;
     }
 
-    const pixelBuff = renderTex.readPixels();
-    const width = renderTex.width;
-    const height = renderTex.height;
-    
     // Calculate the height of the cropped image based on rate
-    const cropHeight = Math.floor(height * rate);
-
     const canvas = wx.createCanvas();
     canvas.width = width;  // 图片宽度
-    canvas.height = cropHeight; // 裁剪后的高度
+    canvas.height = height; // 裁剪后的高度
     const ctx = canvas.getContext('2d');
 
     // Create ImageData for the full image first
@@ -158,17 +152,17 @@ export function genEmoji(renderTex: RenderTexture, rate: number) {
     // Create a new canvas for the cropped image
     const croppedCanvas = wx.createCanvas();
     croppedCanvas.width = width;
-    croppedCanvas.height = cropHeight;
+    croppedCanvas.height = height;
     const croppedCtx = croppedCanvas.getContext('2d');
     
     // Draw only the top portion of the image based on rate
-    croppedCtx.drawImage(canvas, 0, 0, width, cropHeight, 0, 0, width, cropHeight);
+    croppedCtx.drawImage(canvas, 0, 0, width, height, 0, 0, width, height);
 
     const tempFilePath = croppedCanvas.toTempFilePathSync({
         fileType: 'png',
         quality: 1, // 质量 0-1
         destWidth: width,
-        destHeight: cropHeight
+        destHeight: height
         });
 
     console.log('tempFilePath', tempFilePath);

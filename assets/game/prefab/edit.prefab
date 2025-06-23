@@ -528,8 +528,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 95.9736153978052,
-      "height": 50.39999999999999
+      "width": 111.9868291323731,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -567,14 +567,17 @@
     "_string": "男上加男",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 27.337500000000002,
-    "_fontSize": 24,
+    "_actualFontSize": 31.893750000000004,
+    "_fontSize": 28,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 0,
     "_enableWrapText": true,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "7b1ee9e5-75d5-4763-afb2-9f8de1bffa22",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_isItalic": false,
     "_isBold": false,
@@ -1035,8 +1038,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 119.9670192472565,
-      "height": 50.39999999999999
+      "width": 139.98353641546638,
+      "height": 50.400000000000006
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1074,14 +1077,17 @@
     "_string": "夺命女魔头",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 27.337500000000002,
-    "_fontSize": 24,
+    "_actualFontSize": 31.893750000000004,
+    "_fontSize": 28,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 0,
     "_enableWrapText": true,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "7b1ee9e5-75d5-4763-afb2-9f8de1bffa22",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_isItalic": false,
     "_isBold": false,
@@ -1511,7 +1517,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 398,
+      "width": 360,
       "height": 70
     }
   },
@@ -1577,7 +1583,7 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -198,
+      "x": -180,
       "y": 35,
       "z": 0
     }
@@ -1713,7 +1719,7 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -198,
+      "x": -180,
       "y": 35,
       "z": 0
     }
@@ -1734,7 +1740,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 398,
+      "width": 200,
       "height": 70
     }
   },
@@ -1788,7 +1794,7 @@
     "propertyPath": [
       "_fontSize"
     ],
-    "value": 36
+    "value": 32
   },
   {
     "__type__": "cc.TargetInfo",
@@ -2067,7 +2073,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 398,
+      "width": 360,
       "height": 60
     }
   },
@@ -2087,7 +2093,7 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -198,
+      "x": -180,
       "y": 30,
       "z": 0
     }
@@ -2144,7 +2150,7 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -198,
+      "x": -190,
       "y": 30,
       "z": 0
     }
@@ -2219,7 +2225,7 @@
     "propertyPath": [
       "_fontSize"
     ],
-    "value": 32
+    "value": 28
   },
   {
     "__type__": "cc.TargetInfo",
@@ -2498,7 +2504,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 398,
+      "width": 360,
       "height": 60
     }
   },
@@ -2518,7 +2524,7 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -198,
+      "x": -180,
       "y": 30,
       "z": 0
     }
@@ -2575,7 +2581,7 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -198,
+      "x": -190,
       "y": 30,
       "z": 0
     }
@@ -2650,7 +2656,7 @@
     "propertyPath": [
       "_fontSize"
     ],
-    "value": 32
+    "value": 28
   },
   {
     "__type__": "cc.TargetInfo",
@@ -2929,7 +2935,7 @@
     ],
     "value": {
       "__type__": "cc.Size",
-      "width": 398,
+      "width": 360,
       "height": 60
     }
   },
@@ -2949,7 +2955,7 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -198,
+      "x": -180,
       "y": 30,
       "z": 0
     }
@@ -3006,7 +3012,7 @@
     ],
     "value": {
       "__type__": "cc.Vec3",
-      "x": -198,
+      "x": -190,
       "y": 30,
       "z": 0
     }
@@ -3081,7 +3087,7 @@
     "propertyPath": [
       "_fontSize"
     ],
-    "value": 32
+    "value": 28
   },
   {
     "__type__": "cc.TargetInfo",
@@ -3249,14 +3255,17 @@
     "_string": "就它了！",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 34.171875,
-    "_fontSize": 30,
+    "_actualFontSize": 36.45,
+    "_fontSize": 32,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 1,
     "_enableWrapText": false,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "7b1ee9e5-75d5-4763-afb2-9f8de1bffa22",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_isItalic": false,
     "_isBold": false,
@@ -3706,7 +3715,7 @@
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 40,
-    "_fontSize": 36,
+    "_fontSize": 32,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 1,
@@ -4202,7 +4211,7 @@
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 40,
-    "_fontSize": 32,
+    "_fontSize": 28,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 1,
@@ -4698,7 +4707,7 @@
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 40,
-    "_fontSize": 32,
+    "_fontSize": 28,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 1,
@@ -5194,7 +5203,7 @@
     "_horizontalAlign": 0,
     "_verticalAlign": 1,
     "_actualFontSize": 40,
-    "_fontSize": 32,
+    "_fontSize": 28,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 1,

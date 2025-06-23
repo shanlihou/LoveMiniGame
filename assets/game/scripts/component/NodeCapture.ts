@@ -1,4 +1,4 @@
-import { _decorator, Camera, Component, Node, RenderTexture, Sprite, SpriteFrame } from 'cc';
+import { _decorator, Camera, Component, ImageAsset, Node, RenderTexture, Sprite, SpriteFrame, Texture2D } from 'cc';
 import { uint8ArrayToBase64 } from '../common/utils';
 import { genEmoji } from '../common/adaptor';
 const { ccclass, property } = _decorator;
@@ -11,8 +11,15 @@ export class NodeCapture extends Component {
     sprite: Sprite = null;
     @property(Camera)
     camera: Camera = null;
+
     @property(Number)
-    rate: Number = 1;
+    x: number = 0;
+    @property(Number)
+    y: number = 0;
+    @property(Number)
+    w: number = 0;
+    @property(Number)
+    h: number = 0;
 
     protected _renderTex: RenderTexture = null;
 
@@ -31,9 +38,13 @@ export class NodeCapture extends Component {
         });
 
         const renderTex = this._renderTex = new RenderTexture();
+        // 获取屏幕宽高
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
         renderTex.reset({
-            width: 256,
-            height: 256,
+            width: screenWidth,
+            height: screenHeight,
             // colorFormat: RenderTexture.PixelFormat.RGBA8888,
             // depthStencilFormat: RenderTexture.DepthStencilFormat.DEPTH_24_STENCIL_8
         });
@@ -47,7 +58,9 @@ export class NodeCapture extends Component {
     }
 
     genEmoji() {
-        genEmoji(this._renderTex, this.rate as number);
+        const pixels = new Uint8Array(this.w * this.h * 4);
+        this._renderTex.readPixels(this.x, this.y, this.w, this.h, pixels);
+        genEmoji(pixels, this.w, this.h);
     }
 }
 

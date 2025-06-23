@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "b56f8573-1e11-4f0a-9c45-99c140be87ce",
+  "uuid": "0f8e1d52-5ea7-4f30-92a4-1ca306643b89",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "dialog"
+    "syncNodeName": "dialog-reset"
   }
 }
