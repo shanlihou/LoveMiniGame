@@ -6,16 +6,11 @@ import { datas, Hit } from '../data/Hit';
 import { PlayEffect } from '../component/PlayEffect';
 import { getStorage, getStorageNumber } from '../common/adaptor';
 import { GongDe } from '../component/GongDe';
+import { ActionQueue } from '../component/ActionQueue';
 
 class HitInfo {
     times: number;
     lastHitTime: Date;
-}
-
-enum HitState {
-    NORMAL,
-    TOILET,
-    SHAKING
 }
 
 @ccclass('hitScene')
@@ -32,11 +27,15 @@ export class hitScene extends Component {
     @property(Sprite)
     private fullBody: Sprite = null;
 
+    @property(Label)
+    private nameLabel: Label = null;
+
+    @property(Label)
+    private msgLabel: Label = null;
+
     private hitType: number = -1;
     private hitMap: Map<string, HitInfo> = new Map();
-    private timer: number = 0;
     private msgTimer: number = 0;
-    private hitState: HitState = HitState.NORMAL;
 
     start() {
         let headMask = this.node.getChildByName('head-mask');
@@ -44,9 +43,6 @@ export class hitScene extends Component {
         if (GlobalData.instance.faceSpriteFrame != null) {
             let sprite = child.getComponent(Sprite);
             sprite.spriteFrame = GlobalData.instance.faceSpriteFrame;
-            // child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
-            // let x = GlobalData.instance.facePos.x - headMask.position.x;
-            // let y = GlobalData.instance.facePos.y - headMask.position.y;
             let x = getStorageNumber(STORAGE_KEY_FACE_POSX);
             let y = getStorageNumber(STORAGE_KEY_FACE_POSY);
             child.setPosition(x, y);
@@ -59,12 +55,7 @@ export class hitScene extends Component {
 
         director.on(EVENT_TYPE_HIT_TRIGGER, this.onHit, this);
         director.on(EVENT_TYPE_TOGGLE_BUTTON_ENABLE, this.onToggleButtonEnable, this);
-
-        this.timer = setInterval(() => {
-            this.checkHit();
-        }, 1000);
-
-        this.setName();
+        this.nameLabel.string = getStorage("name");
     }
 
     onLoad() {
@@ -80,29 +71,7 @@ export class hitScene extends Component {
         this.regisonNode.active = true;
     }
 
-    setName() {
-        let nameNode = this.node.parent.getChildByName("name-label");
-        let label = nameNode.getComponent(Label);
-        label.string = getStorage("name");
-    }
-
     onDestroy() {
-        clearInterval(this.timer);
-    }
-
-    checkHit() {
-        // let curTime = new Date();
-        // let deleteList: number[] = [];
-        // for (let [hitType, hitInfo] of this.hitMap) {
-        //     if (curTime.getTime() - hitInfo.lastHitTime.getTime() > 5000) {
-        //         deleteList.push(hitType);
-        //     }
-        // }
-
-        // for (let hitType of deleteList) {
-        //     this.hitMap.delete(hitType);
-        //     this.removeActionByHitType(hitType);
-        // }
     }
 
     getStickerNode(sticker: number) {
@@ -142,7 +111,7 @@ export class hitScene extends Component {
 
     onHit(region: number) {
         console.log('onHit', region);
-        if (this.hitState != HitState.NORMAL) {
+        if (this.isActionRunning()) {
             return;
         }
 
@@ -188,27 +157,36 @@ export class hitScene extends Component {
     }
 
     toiletClick() {
-        console.log('toilet click')
-        if (this.hitState != HitState.NORMAL) {
+        if (this.isActionRunning()) {
             return;
         }
 
-        this.hitState = HitState.TOILET;
-        if (this.msgTimer) {
-            clearTimeout(this.msgTimer);
-            this.msgTimer = 0;
-        }
-        let msgNode = this.node.getChildByName("pop-msg");
-        msgNode.active = false;
+        let action = this.genToiletAction(true);
+        let actionQueue = this.node.getComponent(ActionQueue);
+        actionQueue.addAction(action);
+    }
 
+    triggerToiletByGongDe() {
+        let action = this.genToiletAction(false);
+        let actionQueue = this.node.getComponent(ActionQueue);
+        actionQueue.addAction(action);
+    }
+
+    isActionRunning(): boolean {
+        let actionQueue = this.node.getComponent(ActionQueue);
+        return actionQueue.isRunning();
+    }
+
+    genToiletAction(isClear: boolean) {
         let playEffect = this.node.getComponent(PlayEffect);
-        playEffect.playRush();
+        const returnAction = tween(this.node).call(() => {
+            playEffect.playRush();
+        });
 
         // 假设有一个节点 node，需要旋转并缩小
         const node = this.node;
         let restorePostion = node.position.clone();
         let restoreScale = node.scale.clone();
-
 
         // 旋转动作 (RotateBy)
         const delay = 2.5;
@@ -219,22 +197,25 @@ export class hitScene extends Component {
         // 同时执行旋转和缩放（并行动作）
         const moveAction = tween(node).to(delay, { position: new Vec3(0, -300, 0), scale: new Vec3(0.1, 0.1, 1) });
 
-        const spawnAction = tween(node).delay(0.5).parallel(rotateAction, moveAction).call(() => {
-            this.clearEffect();
-        });
+        returnAction.delay(0.5).parallel(rotateAction, moveAction);
+
+        if (isClear) {
+            returnAction.call(() => {
+                this.clearEffect();
+            });
+        }
 
         const backDelay = 1;
         const backRotation = tween(node).by(backDelay, { angle: backDelay * 720 });
         const backMove = tween(node).to(backDelay, { position: originPosition, scale: new Vec3(1, 1, 1) });
-        spawnAction.delay(1).call(() => {
+        returnAction.delay(1).call(() => {
             playEffect.playRush2();
         }).parallel(backRotation, backMove).call(() => {
             node.setPosition(restorePostion);
             node.setScale(restoreScale);
-            this.hitState = HitState.NORMAL;
         });
-        // 执行动作
-        spawnAction.start();
+
+        return returnAction;
     }
 
     backStart() {
@@ -296,28 +277,31 @@ export class hitScene extends Component {
     }
 
     private showMessageBubble(message: string) {
-        let msgNode = this.node.getChildByName("pop-msg");
-        let label = msgNode.getComponent(Label);
-        label.string = message;
-        label.node.active = true;
+        this.msgLabel.string = message;
+        this.msgLabel.node.active = true;
 
         if (this.msgTimer) {
             clearTimeout(this.msgTimer);
         }
 
+        let that = this;
         this.msgTimer = setTimeout(() => {
-            label.node.active = false;
-            this.msgTimer = 0;
+            that.msgLabel.node.active = false;
+            that.msgTimer = 0;
         }, 5000);
     }
 
     onToggleButtonEnable(hitType: number, isToggle: boolean) {
-        console.log('onToggleButtonEnable', hitType, isToggle);
         this.hitType = isToggle ? hitType : -1;
     }
 
     shake() {
-        this.hitState = HitState.SHAKING;
+        let action = this.genShakeAction();
+        let actionQueue = this.node.getComponent(ActionQueue);
+        actionQueue.addAction(action);
+    }
+
+    genShakeAction() {
         let nodes = [this.backgroundNode, this.node];
         let actions = [];
         let delay = 0.05;
@@ -331,11 +315,7 @@ export class hitScene extends Component {
             actions.push(act);
         }
 
-        tween(this.node)
-            .parallel(actions[0], actions[1])
-            .call(() => {
-                this.hitState = HitState.NORMAL;
-            })
-            .start();
+        return tween(this.node)
+            .parallel(actions[0], actions[1]);
     }
 }

@@ -55,3 +55,5 @@ export const SEX_MALE = 0;
 export const SEX_FEMALE = 1;
 
 export const SAVE_HEAD_NAME = 'save_head';
+
+export const TOILET_COUNT_MAX = 250;

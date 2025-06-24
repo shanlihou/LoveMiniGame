@@ -1,9 +1,10 @@
 import { _decorator, Color, Component, instantiate, Label, Node, Prefab, tween, UIOpacity, Vec3} from 'cc';
-import { GONG_DE_MAIN_WEIGHTS, GONG_DE_VALUES, STORAGE_KEY_ONCE_MAX_GONGDE, STORAGE_KEY_SUM_GONGDE, STORAGE_KEY_TIMES } from '../common/constant';
+import { GONG_DE_MAIN_WEIGHTS, GONG_DE_VALUES, STORAGE_KEY_ONCE_MAX_GONGDE, STORAGE_KEY_SUM_GONGDE, STORAGE_KEY_TIMES, TOILET_COUNT_MAX } from '../common/constant';
 import { randomWeighted } from '../common/utils';
 import { getStorage, getStorageNumber, setStorage } from '../common/adaptor';
 import { LabelMarginLeft } from './LabelMarginLeft';
 import { PlayEffect } from './PlayEffect';
+import { hitScene } from '../scene/hitScene';
 
 const { ccclass, property } = _decorator;
 
@@ -12,6 +13,8 @@ export class GongDe extends Component {
     private sumGongDe: number = 0;
     private times: number = 0;
     private onceMaxGongDe: number = 0;
+
+    private toiletCount: number = 0;
 
     @property(Label)
     private sumGongDeLabel: Label = null;
@@ -126,6 +129,12 @@ export class GongDe extends Component {
 
         if (gongDe >= 50) {
             this.node.getComponent(PlayEffect).playMuyu();
+        }
+
+        this.toiletCount += gongDe;
+        if (this.toiletCount >= TOILET_COUNT_MAX) {
+            this.node.getComponent(hitScene).triggerToiletByGongDe();
+            this.toiletCount = 0;
         }
     }
 
