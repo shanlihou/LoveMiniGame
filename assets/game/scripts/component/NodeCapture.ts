@@ -68,8 +68,12 @@ export class NodeCapture extends Component {
 
         const pixels = new Uint8Array(w * h * 4);
         console.log('genEmoji2', x, y, w, h);
-        this._renderTex.readPixels(x, y, w, h, pixels);
-        console.log('genEmoji3', x, y, w, h);
+        
+        // In Cocos Creator, readPixels coordinates start from bottom-left
+        // We need to convert from top-left to bottom-left coordinate system
+        const readY = this._renderTex.height - y - h;
+        this._renderTex.readPixels(x, readY, w, h, pixels);
+        console.log('genEmoji3', x, readY, w, h);
 
         genEmoji(pixels, w, h);
     }

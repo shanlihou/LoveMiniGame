@@ -3,7 +3,7 @@ import { SAVE_HEAD_NAME } from "./constant";
 import { isWx } from "./utils";
 
 // WeChat Mini Game type declarations
-// declare const wx: any;
+declare const wx: any;
 
 export function setStorage(key: string, value: any) {
     if (isWx()) {
@@ -144,8 +144,8 @@ export function genEmojiNotWx(pixelBuff: Uint8Array, width: number, height: numb
     
     ctx.putImageData(imageData, 0, 0);
 
-    // Convert to data URL and trigger download
-    const dataURL = canvas.toDataURL('image/png');
+    // Convert to data URL with transparency support
+    const dataURL = canvas.toDataURL('image/png', 1.0);
     const link = document.createElement('a');
     link.download = 'captured_image.png';
     link.href = dataURL;
