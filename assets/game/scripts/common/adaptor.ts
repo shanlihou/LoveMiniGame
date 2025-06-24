@@ -1,9 +1,9 @@
-import { RenderTexture } from "cc";
+import { RenderTexture, Texture2D } from "cc";
 import { SAVE_HEAD_NAME } from "./constant";
 import { isWx } from "./utils";
 
 // WeChat Mini Game type declarations
-declare const wx: any;
+// declare const wx: any;
 
 export function setStorage(key: string, value: any) {
     if (isWx()) {
@@ -119,15 +119,56 @@ export function initPrivacAuth() {
     })
 }
 
+export function genEmojiNotWx(pixelBuff: Uint8Array, width: number, height: number) {
+    // Create canvas for image processing
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    
+    // Create ImageData and flip the image vertically
+    const imageData = ctx.createImageData(width, height);
+    
+    // Flip the image vertically and copy pixels
+    for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+            const sourceIndex = (y * width + x) * 4;
+            const targetIndex = ((height - 1 - y) * width + x) * 4;
+            
+            imageData.data[targetIndex] = pixelBuff[sourceIndex];     // R
+            imageData.data[targetIndex + 1] = pixelBuff[sourceIndex + 1]; // G
+            imageData.data[targetIndex + 2] = pixelBuff[sourceIndex + 2]; // B
+            imageData.data[targetIndex + 3] = pixelBuff[sourceIndex + 3]; // A
+        }
+    }
+    
+    ctx.putImageData(imageData, 0, 0);
+
+    // Convert to data URL and trigger download
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'captured_image.png';
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    console.log('Image saved successfully');
+}
+
 export function genEmoji(pixelBuff: Uint8Array, width: number, height: number) {
     if (!isWx()) {
+        // Use genEmojiNotWx for non-WeChat environment
+        genEmojiNotWx(pixelBuff, width, height);
         return;
     }
 
     // Calculate the height of the cropped image based on rate
+    console.log('wx create canvas')
     const canvas = wx.createCanvas();
     canvas.width = width;  // 图片宽度
     canvas.height = height; // 裁剪后的高度
+    console.log('canvas');
     const ctx = canvas.getContext('2d');
 
     // Create ImageData for the full image first
@@ -147,18 +188,19 @@ export function genEmoji(pixelBuff: Uint8Array, width: number, height: number) {
     }
     
     // Put the full flipped image to canvas
+    console.log('put image')
     ctx.putImageData(fullImageData, 0, 0);
     
-    // Create a new canvas for the cropped image
-    const croppedCanvas = wx.createCanvas();
-    croppedCanvas.width = width;
-    croppedCanvas.height = height;
-    const croppedCtx = croppedCanvas.getContext('2d');
+    // // Create a new canvas for the cropped image
+    // const croppedCanvas = wx.createCanvas();
+    // croppedCanvas.width = width;
+    // croppedCanvas.height = height;
+    // const croppedCtx = croppedCanvas.getContext('2d');
     
-    // Draw only the top portion of the image based on rate
-    croppedCtx.drawImage(canvas, 0, 0, width, height, 0, 0, width, height);
+    // // Draw only the top portion of the image based on rate
+    // croppedCtx.drawImage(canvas, 0, 0, width, height, 0, 0, width, height);
 
-    const tempFilePath = croppedCanvas.toTempFilePathSync({
+    const tempFilePath = canvas.toTempFilePathSync({
         fileType: 'png',
         quality: 1, // 质量 0-1
         destWidth: width,

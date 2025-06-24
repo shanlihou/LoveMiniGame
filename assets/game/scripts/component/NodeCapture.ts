@@ -58,9 +58,20 @@ export class NodeCapture extends Component {
     }
 
     genEmoji() {
-        const pixels = new Uint8Array(this.w * this.h * 4);
-        this._renderTex.readPixels(this.x, this.y, this.w, this.h, pixels);
-        genEmoji(pixels, this.w, this.h);
+        let x = Math.round(this.x * this._renderTex.width);
+        let y = Math.round(this.y * this._renderTex.height);
+
+        let w = Math.round(this.w * this._renderTex.width);
+        let h = Math.round(this.h * this._renderTex.height);
+
+        console.log('genEmoji', x, y, w, h);
+
+        const pixels = new Uint8Array(w * h * 4);
+        console.log('genEmoji2', x, y, w, h);
+        this._renderTex.readPixels(x, y, w, h, pixels);
+        console.log('genEmoji3', x, y, w, h);
+
+        genEmoji(pixels, w, h);
     }
 }
 
