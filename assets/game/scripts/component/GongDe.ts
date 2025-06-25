@@ -136,6 +136,23 @@ export class GongDe extends Component {
             this.node.getComponent(hitScene).triggerToiletByGongDe();
             this.toiletCount = 0;
         }
+        else {
+            this.node.getComponent(hitScene).triggerPaperMoney();
+        }
+    }
+
+    clearGongDe() {
+        this.sumGongDe = 0;
+        this.times = 0;
+        this.onceMaxGongDe = 0;
+        this.toiletCount = 0;
+        this.setLabelNodeStr(this.sumGongDeLabel, (- this.sumGongDe).toString());
+        this.setLabelNodeStr(this.timesLabel, this.times.toString());
+        this.setLabelNodeStr(this.onceMaxGongDeLabel, this.onceMaxGongDe.toString());
+
+        setStorage(STORAGE_KEY_SUM_GONGDE, this.sumGongDe);
+        setStorage(STORAGE_KEY_TIMES, this.times);
+        setStorage(STORAGE_KEY_ONCE_MAX_GONGDE, this.onceMaxGongDe);
     }
 
     update(deltaTime: number) {}

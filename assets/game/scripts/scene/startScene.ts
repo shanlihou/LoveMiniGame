@@ -7,7 +7,7 @@ import { AudioMgr } from '../component/AudioMgr';
 import { getStorage, getStorageNumber, initPrivacAuth, saveTempFile, setStorage, takePhotoInWx, takePhotoWxPrivacy } from '../common/adaptor';
 import { Zoom } from '../component/Zoom';
 import { isWx } from '../common/utils';
-import { DialogCtrl } from '../component/DialogCtrl';
+import { DialogCtrl } from '../component/dialog/DialogCtrl';
 const { ccclass, property } = _decorator;
 
 @ccclass('startScene')

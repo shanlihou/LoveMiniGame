@@ -1,6 +1,8 @@
+// 这个对话框是用来修改名字还有性别自定义对话的
+
 import { _decorator, Component, EditBox, Label, Node, Toggle } from 'cc';
-import { SEX_FEMALE, SEX_MALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_NAME, STORAGE_KEY_SEX } from '../common/constant';
-import { getStorage, getStorageString } from '../common/adaptor';
+import { SEX_FEMALE, SEX_MALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_NAME, STORAGE_KEY_SEX } from '../../common/constant';
+import { getStorage, getStorageString } from '../../common/adaptor';
 const { ccclass, property } = _decorator;
 
 class DialogResult {

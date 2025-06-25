@@ -1,12 +1,13 @@
-import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText, tween, Vec3, AudioSource } from 'cc';
+import { _decorator, assetManager, Button, Component, director, EventTouch, ImageAsset, Node, Sprite, SpriteFrame, UITransform, Label, RichText, tween, Vec3, AudioSource, Prefab, instantiate, ParticleSystem2D, Tween, UIOpacity } from 'cc';
 import { GlobalData } from '../common/globalData';
-import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_SEX } from '../common/constant';
+import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE, SEX_FEMALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_NAME, STORAGE_KEY_SEX } from '../common/constant';
 const { ccclass, property } = _decorator;
 import { datas, Hit } from '../data/Hit';
 import { PlayEffect } from '../component/PlayEffect';
 import { getStorage, getStorageNumber } from '../common/adaptor';
 import { GongDe } from '../component/GongDe';
 import { ActionQueue } from '../component/ActionQueue';
+import { ResetConfirmDialog } from '../component/dialog/ResetConfirmDialog';
 
 class HitInfo {
     times: number;
@@ -33,6 +34,18 @@ export class hitScene extends Component {
     @property(Label)
     private msgLabel: Label = null;
 
+    @property(Node)
+    private resetNode: Node = null;
+
+    @property(Prefab)
+    private resetConfirmDialog: Prefab = null;
+
+    @property(Node)
+    private paperMoneyNode: Node = null;
+
+    @property(Label)
+    private upSkyLabel: Label = null;
+
     private hitType: number = -1;
     private hitMap: Map<string, HitInfo> = new Map();
     private msgTimer: number = 0;
@@ -56,6 +69,7 @@ export class hitScene extends Component {
         director.on(EVENT_TYPE_HIT_TRIGGER, this.onHit, this);
         director.on(EVENT_TYPE_TOGGLE_BUTTON_ENABLE, this.onToggleButtonEnable, this);
         this.nameLabel.string = getStorage("name");
+        this.resetNode.on(Node.EventType.TOUCH_START, this.onPressReset, this);
     }
 
     onLoad() {
@@ -317,5 +331,60 @@ export class hitScene extends Component {
 
         return tween(this.node)
             .parallel(actions[0], actions[1]);
+    }
+
+    triggerPaperMoney() {
+        let action = this.genPaperMoneyAction();
+        let actionQueue = this.node.getComponent(ActionQueue);
+        actionQueue.addAction(action);
+    }
+
+    genPaperMoneyAction() : Tween<any> {
+        this.paperMoneyNode.active = true;
+        const paperMoneyNode = this.paperMoneyNode;
+        const particleSystem = paperMoneyNode.getComponent(ParticleSystem2D);
+        const upSkyLabel = this.upSkyLabel;
+        upSkyLabel.node.active = true;
+        let name = getStorage(STORAGE_KEY_NAME);
+        upSkyLabel.string = `恭送${name}一拳升天`
+        upSkyLabel.node.setScale(0.1, 0.1);
+        const labelAction = tween(upSkyLabel.node).to(0.5, { scale: new Vec3(3, 3, 1) });
+
+        const node = this.node;
+        const opacity = node.getComponent(UIOpacity);
+        opacity.opacity = 128;
+        const moveAction = tween(node).to(3, { position: new Vec3(0, -100, 0) });
+
+        const returnAction = tween(paperMoneyNode).call(() => {
+                particleSystem.resetSystem();
+            })
+            .parallel(labelAction)
+            .delay(0.5)
+            .call(() => {
+                upSkyLabel.node.active = false;
+                paperMoneyNode.active = false;
+            });
+
+        return returnAction;
+    }
+
+    async onPressReset() {
+        let parent = this.node.parent;
+        if (parent.getChildByName("resetConfirmDialog")) {
+            return;
+        }
+
+        console.log('onPressReset');
+        let dialog = instantiate(this.resetConfirmDialog);
+        dialog.name = "resetConfirmDialog";
+        this.node.parent.addChild(dialog);
+        const dialogCtrl = dialog.getComponent(ResetConfirmDialog);
+        let result = await dialogCtrl.show();
+        console.log('onPressReset', result);
+        dialog.destroy();
+        if (result) {
+            let gongDe = this.node.getComponent(GongDe);
+            gongDe.clearGongDe();
+        }
     }
 }
