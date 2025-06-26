@@ -28,7 +28,7 @@ export const FACE_INIT_SIZE = new Vec2(800, 800);
 export const COLOR_GRAY = new Color('#6d6d6d');
 export const COLOR_WHITE = new Color('#FFFFFF');
 
-export const GONG_DE_MAIN_WEIGHTS = [3960, 50, 8, 4, 1];
+export const GONG_DE_MAIN_WEIGHTS = [1960, 50, 8, 4, 1];
 export const GONG_DE_VALUES = [
     [1, 2, 3, 4, 5],
     [8, 10, 12, 15, 18, 20, 25, 29, 38, 49], 
@@ -56,4 +56,4 @@ export const SEX_FEMALE = 1;
 
 export const SAVE_HEAD_NAME = 'save_head';
 
-export const TOILET_COUNT_MAX = 250;
+export const TOILET_COUNT_MAX = 2;

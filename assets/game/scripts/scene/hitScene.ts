@@ -193,12 +193,10 @@ export class hitScene extends Component {
 
     genToiletAction(isClear: boolean) {
         let playEffect = this.node.getComponent(PlayEffect);
-        const returnAction = tween(this.node).call(() => {
-            playEffect.playRush();
-        });
+        const node = this.node;
+        let that = this;
 
         // 假设有一个节点 node，需要旋转并缩小
-        const node = this.node;
         let restorePostion = node.position.clone();
         let restoreScale = node.scale.clone();
 
@@ -211,25 +209,32 @@ export class hitScene extends Component {
         // 同时执行旋转和缩放（并行动作）
         const moveAction = tween(node).to(delay, { position: new Vec3(0, -300, 0), scale: new Vec3(0.1, 0.1, 1) });
 
-        returnAction.delay(0.5).parallel(rotateAction, moveAction);
-
-        if (isClear) {
-            returnAction.call(() => {
-                this.clearEffect();
-            });
-        }
-
         const backDelay = 1;
         const backRotation = tween(node).by(backDelay, { angle: backDelay * 720 });
         const backMove = tween(node).to(backDelay, { position: originPosition, scale: new Vec3(1, 1, 1) });
-        returnAction.delay(1).call(() => {
-            playEffect.playRush2();
-        }).parallel(backRotation, backMove).call(() => {
-            node.setPosition(restorePostion);
-            node.setScale(restoreScale);
-        });
 
-        return returnAction;
+        return tween(this.node).call(() => {
+                playEffect.playRush();
+                playEffect.playOneShot("willBack");
+                that.showMessageBubble("I will be back");
+            })
+            .delay(0.5)
+            .parallel(rotateAction, moveAction)
+            .call(() => {
+                if (isClear) {
+                    that.clearEffect();
+                }
+            })
+            .delay(1)
+            .call(() => {
+                playEffect.playRush2();
+                that.showMessageBubble("冲不走我的，屎我更强大");
+                playEffect.playOneShot("beStrong");
+            })
+            .parallel(backRotation, backMove).call(() => {
+                node.setPosition(restorePostion);
+                node.setScale(restoreScale);
+            });
     }
 
     backStart() {
@@ -346,23 +351,30 @@ export class hitScene extends Component {
         const upSkyLabel = this.upSkyLabel;
         upSkyLabel.node.active = true;
         let name = getStorage(STORAGE_KEY_NAME);
-        upSkyLabel.string = `恭送${name}一拳升天`
+        upSkyLabel.string = `恭送${name}\n一拳升天`
         upSkyLabel.node.setScale(0.1, 0.1);
         const labelAction = tween(upSkyLabel.node).to(0.5, { scale: new Vec3(3, 3, 1) });
 
         const node = this.node;
-        const opacity = node.getComponent(UIOpacity);
-        opacity.opacity = 128;
-        const moveAction = tween(node).to(3, { position: new Vec3(0, -100, 0) });
+        const uiOpacity = node.getComponent(UIOpacity);
+        const moveAction = tween(node).by(3, new Vec3(0, 500, 0), {
+            onUpdate: (target, ratio) => {
+                console.log('onUpdate', ratio);
+                uiOpacity.opacity = 255 * (1 - ratio);
+            }
+        });
 
         const returnAction = tween(paperMoneyNode).call(() => {
                 particleSystem.resetSystem();
             })
             .parallel(labelAction)
             .delay(0.5)
+            .parallel(moveAction)
             .call(() => {
                 upSkyLabel.node.active = false;
                 paperMoneyNode.active = false;
+                node.position = new Vec3(0, 0, 0);
+                uiOpacity.opacity = 255;
             });
 
         return returnAction;

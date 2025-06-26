@@ -12,6 +12,12 @@ export class PlayEffect extends Component {
     @property(AudioClip)
     private muyu: AudioClip = null;
 
+    @property(AudioClip)
+    private willBack: AudioClip = null;
+    
+    @property(AudioClip)
+    private beStrong: AudioClip = null;
+
     @property({ type: [AudioClip]})
     private hitEffectList: AudioClip[] = [];
 
@@ -24,6 +30,14 @@ export class PlayEffect extends Component {
 
     update(deltaTime: number) {
         
+    }
+
+    public playOneShot(shotName: string) {
+        let audioSource = this.node.getComponent(AudioSource);
+        const clip = this[shotName];
+        if (clip) {
+            audioSource.playOneShot(clip);
+        }
     }
 
     public playMuyu() {

@@ -136,7 +136,8 @@ export class GongDe extends Component {
             this.node.getComponent(hitScene).triggerToiletByGongDe();
             this.toiletCount = 0;
         }
-        else {
+
+        if (gongDe == 10086) {
             this.node.getComponent(hitScene).triggerPaperMoney();
         }
     }

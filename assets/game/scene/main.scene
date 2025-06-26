@@ -5296,7 +5296,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 120,
+      "y": 150,
       "z": 0
     },
     "_lrot": {
@@ -5547,25 +5547,28 @@
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
     "_actualFontSize": 22.78125,
-    "_fontSize": 20,
+    "_fontSize": 32,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 0,
     "_enableWrapText": true,
-    "_font": null,
-    "_isSystemFontUsed": true,
+    "_font": {
+      "__uuid__": "7b1ee9e5-75d5-4763-afb2-9f8de1bffa22",
+      "__expectedType__": "cc.TTFFont"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_isItalic": false,
     "_isBold": false,
     "_isUnderline": false,
     "_underlineHeight": 2,
     "_cacheMode": 0,
-    "_enableOutline": false,
+    "_enableOutline": true,
     "_outlineColor": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_outlineWidth": 2,
@@ -5607,7 +5610,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 0,
+      "y": 120,
       "z": 0
     },
     "_lrot": {
@@ -5746,6 +5749,14 @@
     },
     "muyu": {
       "__uuid__": "a9cd5423-a91c-4605-8976-20c289b70c31",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "willBack": {
+      "__uuid__": "d0554bd5-8985-4b33-a39e-88ad4deed5a2",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "beStrong": {
+      "__uuid__": "1b1901cd-c4ab-4cde-9410-0ddf77a35913",
       "__expectedType__": "cc.AudioClip"
     },
     "hitEffectList": [
