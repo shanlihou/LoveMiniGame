@@ -18,6 +18,12 @@ export class PlayEffect extends Component {
     @property(AudioClip)
     private beStrong: AudioClip = null;
 
+    @property(AudioClip)
+    private willBackChn: AudioClip = null;
+
+    @property(AudioClip)
+    private shengTian: AudioClip = null;
+
     @property({ type: [AudioClip]})
     private hitEffectList: AudioClip[] = [];
 

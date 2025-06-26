@@ -5759,6 +5759,14 @@
       "__uuid__": "1b1901cd-c4ab-4cde-9410-0ddf77a35913",
       "__expectedType__": "cc.AudioClip"
     },
+    "willBackChn": {
+      "__uuid__": "75d277aa-2618-47cc-8baf-77bad30130a4",
+      "__expectedType__": "cc.AudioClip"
+    },
+    "shengTian": {
+      "__uuid__": "c1338832-b0fb-45ce-b14f-ea6641069643",
+      "__expectedType__": "cc.AudioClip"
+    },
     "hitEffectList": [
       {
         "__uuid__": "adfee1a7-e90a-4835-8e46-756d4b1c7afc",

@@ -1,5 +1,5 @@
 import { _decorator, Color, Component, instantiate, Label, Node, Prefab, tween, UIOpacity, Vec3} from 'cc';
-import { GONG_DE_MAIN_WEIGHTS, GONG_DE_VALUES, STORAGE_KEY_ONCE_MAX_GONGDE, STORAGE_KEY_SUM_GONGDE, STORAGE_KEY_TIMES, TOILET_COUNT_MAX } from '../common/constant';
+import { FIRST_10086, GONG_DE_MAIN_WEIGHTS, GONG_DE_VALUES, MOBILE_10086, STORAGE_KEY_ONCE_MAX_GONGDE, STORAGE_KEY_SUM_GONGDE, STORAGE_KEY_TIMES, TOILET_COUNT_MAX } from '../common/constant';
 import { randomWeighted } from '../common/utils';
 import { getStorage, getStorageNumber, setStorage } from '../common/adaptor';
 import { LabelMarginLeft } from './LabelMarginLeft';
@@ -13,6 +13,7 @@ export class GongDe extends Component {
     private sumGongDe: number = 0;
     private times: number = 0;
     private onceMaxGongDe: number = 0;
+    private first10086: boolean = false;
 
     private toiletCount: number = 0;
 
@@ -111,7 +112,6 @@ export class GongDe extends Component {
 
     onHitTriggerGongDe() {
         const gongDe = this.randomGongDe();
-        console.log(gongDe);
 
         this.sumGongDe += gongDe;
         this.times++;
@@ -137,8 +137,14 @@ export class GongDe extends Component {
             this.toiletCount = 0;
         }
 
-        if (gongDe == 10086) {
+        if (gongDe == MOBILE_10086) {
             this.node.getComponent(hitScene).triggerPaperMoney();
+        }
+
+        if (this.sumGongDe >= MOBILE_10086 && !this.first10086) {
+            this.first10086 = true;
+            setStorage(FIRST_10086, this.first10086);
+            this.node.getComponent(hitScene).triggerGoSkyNoMoney();
         }
     }
 
@@ -147,6 +153,7 @@ export class GongDe extends Component {
         this.times = 0;
         this.onceMaxGongDe = 0;
         this.toiletCount = 0;
+        this.first10086 = false;
         this.setLabelNodeStr(this.sumGongDeLabel, (- this.sumGongDe).toString());
         this.setLabelNodeStr(this.timesLabel, this.times.toString());
         this.setLabelNodeStr(this.onceMaxGongDeLabel, this.onceMaxGongDe.toString());
@@ -154,6 +161,7 @@ export class GongDe extends Component {
         setStorage(STORAGE_KEY_SUM_GONGDE, this.sumGongDe);
         setStorage(STORAGE_KEY_TIMES, this.times);
         setStorage(STORAGE_KEY_ONCE_MAX_GONGDE, this.onceMaxGongDe);
+        setStorage(FIRST_10086, this.first10086);
     }
 
     update(deltaTime: number) {}

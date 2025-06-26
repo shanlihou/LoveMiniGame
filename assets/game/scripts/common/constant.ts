@@ -49,6 +49,7 @@ export const STORAGE_KEY_FACE_SCALE = 'faceScale';
 export const STORAGE_KEY_DIY_MSG1 = 'diyMsg1';
 export const STORAGE_KEY_DIY_MSG2 = 'diyMsg2';
 export const STORAGE_KEY_DIY_MSG3 = 'diyMsg3';
+export const FIRST_10086 = 'first10086';
 
 
 export const SEX_MALE = 0;
@@ -56,4 +57,5 @@ export const SEX_FEMALE = 1;
 
 export const SAVE_HEAD_NAME = 'save_head';
 
-export const TOILET_COUNT_MAX = 2;
+export const TOILET_COUNT_MAX = 250;
+export const MOBILE_10086 = 10086;

@@ -72,6 +72,13 @@ export class hitScene extends Component {
         this.resetNode.on(Node.EventType.TOUCH_START, this.onPressReset, this);
     }
 
+    onDestroy() {
+        if (this.msgTimer) {
+            clearTimeout(this.msgTimer);
+            this.msgTimer = 0;
+        }
+    }
+
     onLoad() {
         let sex = Number(getStorage(STORAGE_KEY_SEX));
         if (sex == SEX_FEMALE) {
@@ -85,8 +92,6 @@ export class hitScene extends Component {
         this.regisonNode.active = true;
     }
 
-    onDestroy() {
-    }
 
     getStickerNode(sticker: number) {
         let effectNode = this.node.getChildByName("effect");
@@ -124,7 +129,6 @@ export class hitScene extends Component {
     }
 
     onHit(region: number) {
-        console.log('onHit', region);
         if (this.isActionRunning()) {
             return;
         }
@@ -215,8 +219,13 @@ export class hitScene extends Component {
 
         return tween(this.node).call(() => {
                 playEffect.playRush();
-                playEffect.playOneShot("willBack");
-                that.showMessageBubble("I will be back");
+                if (isClear) {
+                    playEffect.playOneShot("willBackChn");
+                }
+                else {
+                    playEffect.playOneShot("willBack");
+                    that.showMessageBubble("I will be back");
+                }
             })
             .delay(0.5)
             .parallel(rotateAction, moveAction)
@@ -228,8 +237,13 @@ export class hitScene extends Component {
             .delay(1)
             .call(() => {
                 playEffect.playRush2();
-                that.showMessageBubble("冲不走我的，屎我更强大");
-                playEffect.playOneShot("beStrong");
+                if (isClear) {
+                    that.showMessageBubble("谁吃得那么辣？");
+                }
+                else {
+                    that.showMessageBubble("冲不走我的，屎我更强大");
+                    playEffect.playOneShot("beStrong");
+                }
             })
             .parallel(backRotation, backMove).call(() => {
                 node.setPosition(restorePostion);
@@ -344,6 +358,36 @@ export class hitScene extends Component {
         actionQueue.addAction(action);
     }
 
+    triggerGoSkyNoMoney() {
+        let action = this.genGoSkyNoMoneyAction();
+        let actionQueue = this.node.getComponent(ActionQueue);
+        actionQueue.addAction(action);
+    }
+
+    genGoSkyNoMoneyAction() {
+        const node = this.node;
+        const playEffect = this.node.getComponent(PlayEffect);
+        return tween(node).call(() => {
+                playEffect.playOneShot("shengTian");
+            })
+            .parallel(this.genGoSkyAction());
+    }
+
+    genGoSkyAction() {
+        const node = this.node;
+        const uiOpacity = node.getComponent(UIOpacity);
+        return tween(node).by(3, new Vec3(0, 500, 0), {
+                onUpdate: (target, ratio) => {
+                    console.log('onUpdate', ratio);
+                    uiOpacity.opacity = 255 * (1 - ratio);
+                }
+            })
+            .call(() => {
+                uiOpacity.opacity = 255;
+                node.position = new Vec3(0, 0, 0);
+            });
+    }
+
     genPaperMoneyAction() : Tween<any> {
         this.paperMoneyNode.active = true;
         const paperMoneyNode = this.paperMoneyNode;
@@ -356,25 +400,16 @@ export class hitScene extends Component {
         const labelAction = tween(upSkyLabel.node).to(0.5, { scale: new Vec3(3, 3, 1) });
 
         const node = this.node;
-        const uiOpacity = node.getComponent(UIOpacity);
-        const moveAction = tween(node).by(3, new Vec3(0, 500, 0), {
-            onUpdate: (target, ratio) => {
-                console.log('onUpdate', ratio);
-                uiOpacity.opacity = 255 * (1 - ratio);
-            }
-        });
 
         const returnAction = tween(paperMoneyNode).call(() => {
                 particleSystem.resetSystem();
             })
             .parallel(labelAction)
             .delay(0.5)
-            .parallel(moveAction)
+            .parallel(this.genGoSkyAction())
             .call(() => {
                 upSkyLabel.node.active = false;
                 paperMoneyNode.active = false;
-                node.position = new Vec3(0, 0, 0);
-                uiOpacity.opacity = 255;
             });
 
         return returnAction;

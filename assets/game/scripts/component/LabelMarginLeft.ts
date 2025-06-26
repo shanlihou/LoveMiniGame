@@ -27,7 +27,5 @@ export class LabelMarginLeft extends Component {
 
         const ut = this.node.getComponent(UITransform);
         const posX = this.leftPos + ut.width / 2;
-        console.log('setText', posX, ut.width);
-        // this.node.setPosition(posX, this.node.position.y);
     }
 }
