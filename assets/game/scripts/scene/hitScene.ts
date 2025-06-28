@@ -61,6 +61,7 @@ export class hitScene extends Component {
             child.setPosition(x, y);
             let scale = getStorageNumber(STORAGE_KEY_FACE_SCALE);
             child.setScale(scale, scale);
+            console.log('hit scene start', x, y, scale);
         }
         else {
             child.active = false;

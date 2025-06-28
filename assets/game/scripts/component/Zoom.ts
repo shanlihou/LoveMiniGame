@@ -15,7 +15,8 @@ export class Zoom extends Component {
 
     // 单指移动相关变量
     private lastTouchPos: Vec2 = new Vec2();
-    private isMoving: boolean = false;
+    private lastTouchNum = 0;
+    private maxDis = 0;
 
     start() {
         // 多点触摸默认开启，无需特别设置
@@ -55,24 +56,21 @@ export class Zoom extends Component {
 
         const touches = event.getTouches();
         console.log("onTouchStart", touches.length);
+        this.startWithTouches(touches);
+    }
+
+    private startWithTouches(touches: Touch[]) {
         if (touches.length >= 2) {
             this.startDistance = this.getDistance(touches[0], touches[1]);
             this.startScale = this.node.scale.x;
         } else if (touches.length === 1) {
             const location = touches[0].getUILocation();
             this.lastTouchPos.set(location.x, location.y);
-            this.isMoving = true;
         }
+        this.lastTouchNum = touches.length;
     }
-    
-    // 触摸移动
-    private onTouchMove(event: EventTouch) {
-        if (!this.enableZoom) {
-            return;
-        }
 
-        const touches = event.getTouches();
-        console.log("onTouchMove", touches.length);
+    private moveByTouch(touches: Touch[]) {
         if (touches.length >= 2) {
             // 计算当前两指距离
             const currentDistance = this.getDistance(touches[0], touches[1]);
@@ -90,14 +88,21 @@ export class Zoom extends Component {
                 // 应用缩放
                 this.node.setScale(scale, scale);
             }
-        } else if (touches.length === 1 && this.isMoving) {
+        } else if (touches.length === 1) {
             // 单指移动
+
             const location = touches[0].getUILocation();
             const currentPos = new Vec2(location.x, location.y);
             const delta = new Vec2(
                 currentPos.x - this.lastTouchPos.x,
                 currentPos.y - this.lastTouchPos.y
             );
+
+            let dis = (delta.x * delta.x + delta.y * delta.y);
+            if (dis > this.maxDis) {
+                this.maxDis = dis;
+                console.log("maxDis", this.maxDis);
+            }
             
             // 更新节点位置
             const currentPos3D = this.node.position;
@@ -111,7 +116,21 @@ export class Zoom extends Component {
             this.lastTouchPos.set(currentPos.x, currentPos.y);
         }
     }
-    
+
+    private onTouchMove(event: EventTouch) {
+        if (!this.enableZoom) {
+            return;
+        }
+
+        const touches = event.getTouches();
+        if (touches.length === this.lastTouchNum) {
+            this.moveByTouch(touches);
+        }
+        else {
+            this.startWithTouches(touches);
+        }
+    }
+
     // 触摸结束
     private onTouchEnd(event: EventTouch) {
         if (!this.enableZoom) {
@@ -120,8 +139,9 @@ export class Zoom extends Component {
         
         const touches = event.getTouches();
         console.log("onTouchEnd", touches.length);
-        this.startDistance = 0;
-        this.isMoving = false;
+        if (touches.length === this.lastTouchNum) {
+            this.moveByTouch(touches);
+        }
 
         director.emit(EVENT_TYPE_SCALE_FACE_END, this.node.position, this.node.scale.x);
         

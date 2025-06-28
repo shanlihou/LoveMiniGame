@@ -30,14 +30,13 @@ export class startScene extends Component {
     private editDialog: Prefab = null;
 
     @property(Sprite)
-    private bodyBackgroud: Sprite = null;
+  private bodyBackgroud: Sprite = null;
 
     @property(Sprite)
     private bodyBackgroudNoHead: Sprite = null;
 
-    getAddHead() {
-      return this.node.getChildByName("head-mask").getChildByName("add-head");
-    }
+    @property(Node)
+    private addHead: Node = null;
 
     start() {
       console.log("startScene start");
@@ -77,9 +76,8 @@ export class startScene extends Component {
 
           console.log("load save head", x, y, scale);
 
-          let addHead = this.getAddHead();
-          addHead.setPosition(x, y);
-          addHead.setScale(scale, scale);
+          this.addHead.setPosition(x, y);
+          this.addHead.setScale(scale, scale);
         }
       }
     }
@@ -131,6 +129,9 @@ export class startScene extends Component {
 
     enterMain() {
       console.log("enterMain");
+      let x = this.addHead.position.x;
+      let y = this.addHead.position.y;
+      this.onScaleFaceEnd(new Vec2(x, y), this.addHead.scale.x);
       assetManager.loadBundle("game",(err,bundle)=>{
           console.log("加载bundle1", err);
           console.log("加载bundle2", bundle);
@@ -148,7 +149,7 @@ export class startScene extends Component {
 
       const dialog = instantiate(this.privacyDialog);
       dialog.name = "privacyDialog";
-      this.node.addChild(dialog);
+      this.node.parent.addChild(dialog);
       let result = await dialog.getChildByName("rich").getComponent(ClickRich).show();
       dialog.destroy();
       return result;
@@ -179,6 +180,9 @@ export class startScene extends Component {
         console.error("saveTempFile failed");
         return;
       }
+      console.log("saveTempFile result", destPath);
+
+      setStorage(STORAGE_KEY_SAVE_HEAD, destPath);
 
       let spriteFrame = await this.loadRemoteImage(tempFileName);
       if (!spriteFrame) {
@@ -189,25 +193,23 @@ export class startScene extends Component {
       console.log("takePhoto success", tempFileName, destPath, spriteFrame);
       this.setSpriteFrameToDisplayPhoto(spriteFrame);
 
-      let addHead = this.getAddHead();
-      addHead.setPosition(0, 0);
-      addHead.setScale(1, 1);
+      this.addHead.setPosition(0, 0);
+      this.addHead.setScale(1, 1);
       this.onScaleFaceEnd(new Vec2(0, 0), 1);
     }
 
     setSpriteFrameToDisplayPhoto(spriteFrame: SpriteFrame) {
-      let child = this.getAddHead();
-      let sprite = child.getComponent(Sprite);
+      let sprite = this.addHead.getComponent(Sprite);
       sprite.spriteFrame = spriteFrame;
       this.faceLine = spriteFrame;
       sprite.sizeMode = Sprite.SizeMode.CUSTOM; // 必须设置为CUSTOM
-      // 获取 spriteFrame 的原始尺寸
-      // child.getComponent(UITransform).setContentSize(FACE_INIT_SIZE.x, FACE_INIT_SIZE.y); // 设置节点尺寸
+      let uit = this.addHead.getComponent(UITransform);
+      uit.setContentSize(spriteFrame.width, spriteFrame.height);
       if (spriteFrame) {
         this.isSetFace = true;
       }
 
-      let zoom = child.getComponent(Zoom);
+      let zoom = this.addHead.getComponent(Zoom);
       zoom.enableZoom = true;
     }
 
@@ -220,7 +222,6 @@ export class startScene extends Component {
                 resolve(null);
                 return;
             }
-            // this.setSpriteFrameToDisplayPhoto(SpriteFrame.createWithImage(imageAsset));
             resolve(SpriteFrame.createWithImage(imageAsset));
         });
       })
@@ -230,7 +231,7 @@ export class startScene extends Component {
       console.log("onPressEdit");
       const dialog = instantiate(this.editDialog);
       dialog.name = "editDialog";
-      this.node.addChild(dialog);
+      this.node.parent.addChild(dialog);
       const dialogCtrl = dialog.getComponent(DialogCtrl);
 
       let result = await dialogCtrl.show();
