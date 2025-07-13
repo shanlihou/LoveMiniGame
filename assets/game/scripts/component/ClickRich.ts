@@ -5,6 +5,7 @@ const { ccclass, property } = _decorator;
 @ccclass('ClickRich')
 export class ClickRich extends Component {
     private resolvePromise: (value: boolean) => void;
+    private wxResolve: any = null;
 
     start() {
 
@@ -12,6 +13,10 @@ export class ClickRich extends Component {
 
     update(deltaTime: number) {
         
+    }
+
+    setWxResolve(resolve: any) {
+        this.wxResolve = resolve;
     }
 
     show(): Promise<boolean> {
@@ -27,11 +32,19 @@ export class ClickRich extends Component {
 
     onCancel() {
         console.log("onCancel");
+        if (this.wxResolve) {
+            console.log("onCancel, wxResolve", this.wxResolve);
+            this.wxResolve({ event: 'disagree' });
+        }
         this.resolvePromise(false);
     }
 
     onConfirm() {
         console.log("onConfirm");
+        if (this.wxResolve) {
+            console.log("onConfirm, wxResolve", this.wxResolve);
+            this.wxResolve({ event: 'agree' });
+        }
         this.resolvePromise(true);
     }
 }

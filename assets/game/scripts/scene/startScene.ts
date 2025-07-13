@@ -43,7 +43,7 @@ export class startScene extends Component {
       AudioMgr.Instance.init(this.bgm);
       director.on(EVENT_TYPE_SCALE_FACE_END, this.onScaleFaceEnd, this);
 
-      initPrivacAuth();
+      this.initPrivacAuth();
 
       this.loadName();
 
@@ -51,6 +51,28 @@ export class startScene extends Component {
         let enterEditButton = this.node.getChildByName("enter-edit");
         enterEditButton.active = true;
       }
+    }
+
+    initPrivacAuth() {
+      if (!isWx()) {
+          return;
+      }
+
+      wx.onNeedPrivacyAuthorization(async (resolve) => {
+          console.log("onNeedPrivacyAuthorization, before");
+          resolve({ event: 'exposureAuthorization' })
+          let ret = await this.loadPrivacyDialog(resolve);
+          console.log("onNeedPrivacyAuthorization", ret);
+          // if (ret) {
+          //   resolve({ event: 'agree' });
+          // } else {
+          //   resolve({ event: 'disagree' });
+          // }
+      });
+
+      wx.showShareMenu({
+          menus: ['shareAppMessage', 'shareTimeline']
+      })
     }
 
     onLoad() {
@@ -142,7 +164,7 @@ export class startScene extends Component {
       });
     }
 
-    async loadPrivacyDialog(): Promise<boolean> {
+    async loadPrivacyDialog(resolve: any): Promise<boolean> {
       if (this.node.getChildByName("privacyDialog")) {
         return false;
       }
@@ -150,7 +172,9 @@ export class startScene extends Component {
       const dialog = instantiate(this.privacyDialog);
       dialog.name = "privacyDialog";
       this.node.parent.addChild(dialog);
-      let result = await dialog.getChildByName("rich").getComponent(ClickRich).show();
+      let rich = dialog.getChildByName("rich").getComponent(ClickRich);
+      rich.setWxResolve(resolve);
+      let result = await rich.show();
       dialog.destroy();
       return result;
     }
@@ -161,16 +185,16 @@ export class startScene extends Component {
         return;
       }
     
-      let setting = await getSetting();
-      console.log('setting', setting);
+      // let setting = await getSetting();
+      // console.log('setting', setting);
 
-      if (!(await this.loadPrivacyDialog())) {
-        return;
-      }
+      // if (!(await this.loadPrivacyDialog())) {
+      //   return;
+      // }
 
-      if (!(await getWriteAuth())) {
-        return;
-      }
+      // if (!(await getWriteAuth())) {
+      //   return;
+      // }
 
       if (!(await takePhotoWxPrivacy())) {
         console.error("takePhotoWxPrivacy failed");
