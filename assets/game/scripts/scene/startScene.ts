@@ -4,7 +4,7 @@ import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
 import { AudioMgr } from '../component/AudioMgr';
-import { getStorage, getStorageNumber, initPrivacAuth, saveTempFile, setStorage, takePhotoInWx, takePhotoWxPrivacy } from '../common/adaptor';
+import { getSetting, getStorage, getStorageNumber, getWriteAuth, initPrivacAuth, saveTempFile, setStorage, takePhotoInWx, takePhotoWxPrivacy } from '../common/adaptor';
 import { Zoom } from '../component/Zoom';
 import { isWx } from '../common/utils';
 import { DialogCtrl } from '../component/dialog/DialogCtrl';
@@ -160,12 +160,20 @@ export class startScene extends Component {
         this.setSpriteFrameToDisplayPhoto(this.faceLine);
         return;
       }
+    
+      let setting = await getSetting();
+      console.log('setting', setting);
 
       if (!(await this.loadPrivacyDialog())) {
         return;
       }
 
+      if (!(await getWriteAuth())) {
+        return;
+      }
+
       if (!(await takePhotoWxPrivacy())) {
+        console.error("takePhotoWxPrivacy failed");
         return;
       }
 

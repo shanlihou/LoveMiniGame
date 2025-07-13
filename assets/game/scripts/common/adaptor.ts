@@ -46,6 +46,7 @@ export function takePhotoWxPrivacy(): Promise<boolean> {
                 resolve(true);
             },
             fail: (err) => {
+                console.error('takePhotoWxPrivacy fail', err);
                 resolve(false);
             }
         })
@@ -156,7 +157,7 @@ export function genEmojiNotWx(pixelBuff: Uint8Array, width: number, height: numb
     console.log('Image saved successfully');
 }
 
-export function genEmoji(pixelBuff: Uint8Array, width: number, height: number) {
+export async function genEmoji(pixelBuff: Uint8Array, width: number, height: number) {
     if (!isWx()) {
         // Use genEmojiNotWx for non-WeChat environment
         genEmojiNotWx(pixelBuff, width, height);
@@ -209,28 +210,64 @@ export function genEmoji(pixelBuff: Uint8Array, width: number, height: number) {
 
     console.log('tempFilePath', tempFilePath);
 
-    wx.authorize({
-        scope: 'scope.writePhotosAlbum',   // 需要获取相册权限
-        success: (res)=>{     
-            // 将截图保存到相册中
-            wx.saveImageToPhotosAlbum({
-                filePath: tempFilePath,
-                success: (res)=>{
-                    console.log('图片保存成功', res);
-                    wx.showToast({
-                        title: '图片保存成功',
-                        icon: 'success',
-                        duration: 2000
-                    });
-                },
-                fail: (res)=>{
-                    console.log(res);
-                    console.log('图片保存失败');
-                }
-            });
-        },
-        fail: (res)=>{
-            console.log('授权失败');
-        }
+    if (!await getWriteAuth()) {
+        return;
+    }
+
+    if (!await saveImageToPhotosAlbum(tempFilePath)) {
+        return;
+    }
+
+    wx.showToast({
+        title: '图片保存成功',
+        icon: 'success',
+        duration: 2000
     });
+}
+
+export function getWriteAuth(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        wx.authorize({
+            scope: 'scope.writePhotosAlbum',   // 需要获取相册权限
+            success: (res)=>{
+                console.log('getWriteAuth success', res);
+                resolve(true);
+            },
+            fail: (res)=>{  
+                console.log('getWriteAuth fail', res);
+                resolve(false);
+            }
+        })
+    })
+}
+
+export function saveImageToPhotosAlbum(tempFilePath: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        wx.saveImageToPhotosAlbum({
+            filePath: tempFilePath,
+            success: (res)=>{
+                console.log('saveImageToPhotosAlbum success', res);
+                resolve(true);
+            },
+            fail: (res)=>{
+                console.log('saveImageToPhotosAlbum fail', res);
+                resolve(false);
+            }
+        })
+    })  
+}
+
+export function getSetting(): Promise<any | null> {
+    return new Promise((resolve, reject) => {
+        wx.getSetting({
+            success: (res)=>{
+                console.log('getSetting success', res);
+                resolve(res);
+            },
+            fail: (res)=>{
+                console.error('getSetting fail', res);
+                resolve(null);
+            }
+        })
+    })
 }
