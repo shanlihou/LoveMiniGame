@@ -1,6 +1,6 @@
 import { RenderTexture, Texture2D } from "cc";
 import { SAVE_HEAD_NAME } from "./constant";
-import { isWx } from "./utils";
+import { getRandomShareTitle, isWx } from "./utils";
 
 // WeChat Mini Game type declarations
 declare const wx: any;
@@ -269,5 +269,22 @@ export function getSetting(): Promise<any | null> {
                 resolve(null);
             }
         })
+    })
+}
+
+export function shareAppMessage() {
+    if (!isWx()) {
+        return;
+    }
+
+    wx.shareAppMessage({
+        title: getRandomShareTitle(),
+        desc: '你不敢打是吧',
+        success: (res)=>{
+            console.log('shareAppMessage success', res);
+        },
+        fail: (res)=>{
+            console.error('shareAppMessage fail', res);
+        }
     })
 }

@@ -23,7 +23,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 66
+      "__id__": 68
     },
     "_lpos": {
       "__type__": "cc.Vec3",
@@ -54,7 +54,7 @@
     },
     "autoReleaseAssets": false,
     "_globals": {
-      "__id__": 67
+      "__id__": 69
     },
     "_id": "2bf579d8-64cf-4037-a02b-507a769ce000"
   },
@@ -86,19 +86,19 @@
         "__id__": 55
       },
       {
-        "__id__": 58
+        "__id__": 60
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 63
-      },
-      {
-        "__id__": 64
-      },
-      {
         "__id__": 65
+      },
+      {
+        "__id__": 66
+      },
+      {
+        "__id__": 67
       }
     ],
     "_prefab": null,
@@ -1213,7 +1213,7 @@
     "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 63.78750000000001,
+    "_actualFontSize": 75.77499999999999,
     "_fontSize": 56,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1860,8 +1860,8 @@
     "__prefab": null,
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 475.3119855967078,
-      "height": 56.39999999999999
+      "width": 485.9998646795612,
+      "height": 56.4
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1893,7 +1893,7 @@
     "_string": "———— 职场养成计划 ————",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 36.45,
+    "_actualFontSize": 43.3,
     "_fontSize": 32,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
@@ -1951,6 +1951,9 @@
       },
       {
         "__id__": 57
+      },
+      {
+        "__id__": 58
       }
     ],
     "_prefab": null,
@@ -2045,6 +2048,70 @@
     "_id": "59eqNnUnxP07cLo+7O6jNl"
   },
   {
+    "__type__": "cc.Button",
+    "_name": "",
+    "_objFlags": 0,
+    "__editorExtras__": {},
+    "node": {
+      "__id__": 55
+    },
+    "_enabled": true,
+    "__prefab": null,
+    "clickEvents": [
+      {
+        "__id__": 59
+      }
+    ],
+    "_interactable": true,
+    "_transition": 0,
+    "_normalColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_hoverColor": {
+      "__type__": "cc.Color",
+      "r": 211,
+      "g": 211,
+      "b": 211,
+      "a": 255
+    },
+    "_pressedColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_disabledColor": {
+      "__type__": "cc.Color",
+      "r": 124,
+      "g": 124,
+      "b": 124,
+      "a": 255
+    },
+    "_normalSprite": null,
+    "_hoverSprite": null,
+    "_pressedSprite": null,
+    "_disabledSprite": null,
+    "_duration": 0.1,
+    "_zoomScale": 1.2,
+    "_target": null,
+    "_id": "cet66GpvZDXoLBfwEwzTCi"
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 8
+    },
+    "component": "",
+    "_componentId": "ca0deriPI5F44hNN/dBWD4O",
+    "handler": "onClickShare",
+    "customEventData": ""
+  },
+  {
     "__type__": "cc.Node",
     "_name": "edit",
     "_objFlags": 0,
@@ -2056,13 +2123,13 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 59
-      },
-      {
-        "__id__": 60
-      },
-      {
         "__id__": 61
+      },
+      {
+        "__id__": 62
+      },
+      {
+        "__id__": 63
       }
     ],
     "_prefab": null,
@@ -2101,7 +2168,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 58
+      "__id__": 60
     },
     "_enabled": true,
     "__prefab": null,
@@ -2123,7 +2190,7 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 58
+      "__id__": 60
     },
     "_enabled": true,
     "__prefab": null,
@@ -2162,13 +2229,13 @@
     "_objFlags": 0,
     "__editorExtras__": {},
     "node": {
-      "__id__": 58
+      "__id__": 60
     },
     "_enabled": true,
     "__prefab": null,
     "clickEvents": [
       {
-        "__id__": 62
+        "__id__": 64
       }
     ],
     "_interactable": true,
@@ -2304,28 +2371,28 @@
   {
     "__type__": "cc.SceneGlobals",
     "ambient": {
-      "__id__": 68
-    },
-    "shadows": {
-      "__id__": 69
-    },
-    "_skybox": {
       "__id__": 70
     },
-    "fog": {
+    "shadows": {
       "__id__": 71
     },
-    "octree": {
+    "_skybox": {
       "__id__": 72
     },
-    "skin": {
+    "fog": {
       "__id__": 73
     },
-    "lightProbeInfo": {
+    "octree": {
       "__id__": 74
     },
-    "postSettings": {
+    "skin": {
       "__id__": 75
+    },
+    "lightProbeInfo": {
+      "__id__": 76
+    },
+    "postSettings": {
+      "__id__": 77
     },
     "bakedWithStationaryMainLight": false,
     "bakedWithHighpLightmap": false

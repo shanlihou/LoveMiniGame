@@ -4,7 +4,7 @@ import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
 import { AudioMgr } from '../component/AudioMgr';
-import { getSetting, getStorage, getStorageNumber, getWriteAuth, initPrivacAuth, saveTempFile, setStorage, takePhotoInWx, takePhotoWxPrivacy } from '../common/adaptor';
+import { getSetting, getStorage, getStorageNumber, getWriteAuth, initPrivacAuth, saveTempFile, setStorage, shareAppMessage, takePhotoInWx, takePhotoWxPrivacy } from '../common/adaptor';
 import { Zoom } from '../component/Zoom';
 import { isWx } from '../common/utils';
 import { DialogCtrl } from '../component/dialog/DialogCtrl';
@@ -290,6 +290,10 @@ export class startScene extends Component {
         this.bodyBackgroud.spriteFrame = GlobalData.instance.bodyBackMale;
         this.bodyBackgroudNoHead.spriteFrame = GlobalData.instance.bodyBackNoHeadMale;
       }
+    }
+
+    onClickShare() {
+      shareAppMessage();
     }
 }
 

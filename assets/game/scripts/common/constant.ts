@@ -59,3 +59,9 @@ export const SAVE_HEAD_NAME = 'save_head';
 
 export const TOILET_COUNT_MAX = 250;
 export const MOBILE_10086 = 10086;
+
+export const SHARE_TITLES = [
+    '是牛马就来打我',
+    '来打我撒',
+    '别打了！我错了'
+]

@@ -1,3 +1,5 @@
+import { SHARE_TITLES } from "./constant";
+
 /**
  * 将 Uint8Array 转换为 Base64 字符串
  * @param uint8Array - 输入的二进制数据
@@ -34,16 +36,20 @@ export function uint8ArrayToBase64(uint8Array: Uint8Array): string {
     return output;
   }
 
-  export function isWx() {
-    return typeof wx !== 'undefined';
-  }
+export function isWx() {
+  return typeof wx !== 'undefined';
+}
 
-  export function randomWeighted(weights: number[]) {
-    const total = weights.reduce((a, b) => a + b, 0);
-    const random = Math.random() * total;
-    let sum = 0;
-    for (let i = 0; i < weights.length; i++) {
-      sum += weights[i];
-      if (random <= sum) return i;
-    }
+export function randomWeighted(weights: number[]) {
+  const total = weights.reduce((a, b) => a + b, 0);
+  const random = Math.random() * total;
+  let sum = 0;
+  for (let i = 0; i < weights.length; i++) {
+    sum += weights[i];
+    if (random <= sum) return i;
   }
+}
+
+export function getRandomShareTitle() {
+    return SHARE_TITLES[Math.floor(Math.random() * SHARE_TITLES.length)];
+}
