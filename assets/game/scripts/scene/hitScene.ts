@@ -4,11 +4,11 @@ import { EVENT_TYPE_HIT_TRIGGER, EVENT_TYPE_TOGGLE_BUTTON_ENABLE, FACE_INIT_SIZE
 const { ccclass, property } = _decorator;
 import { datas, Hit } from '../data/Hit';
 import { PlayEffect } from '../component/PlayEffect';
-import { getStorage, getStorageNumber, shareAppMessage } from '../common/adaptor';
+import { getStorage, getStorageNumber, registerShareAppMessage, shareAppMessage } from '../common/adaptor';
 import { GongDe } from '../component/GongDe';
 import { ActionQueue } from '../component/ActionQueue';
 import { ResetConfirmDialog } from '../component/dialog/ResetConfirmDialog';
-import { getRandomShareTitle } from '../common/utils';
+import { getRandomShareTitle, isWx } from '../common/utils';
 
 class HitInfo {
     times: number;
@@ -73,14 +73,7 @@ export class hitScene extends Component {
         this.nameLabel.string = getStorage("name");
         this.resetNode.on(Node.EventType.TOUCH_START, this.onPressReset, this);
 
-        if (isWx()) {
-            wx.onShareAppMessage(function () {
-                return {
-                    title: getRandomShareTitle()
-                }
-            })
-        }
-
+        registerShareAppMessage();
     }
 
     onDestroy() {

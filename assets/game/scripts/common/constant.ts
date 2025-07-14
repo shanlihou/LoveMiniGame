@@ -65,3 +65,10 @@ export const SHARE_TITLES = [
     '来打我撒',
     '别打了！我错了'
 ]
+
+export const SHARE_PIC_INFOS = [
+    ['https://mmocgame.qpic.cn/wechatgame/NeTZTFpFdeKPKqTB4pqLT0CPLxWVWPWuLaVnn5OvSnZ8pE2lMTTLbQh9KaETsmbd/0', 'YO31v2QbTuSxoKjnJb/4wA=='],
+    ['https://mmocgame.qpic.cn/wechatgame/dElp3YdpFNzeGZnWcOpOVvZu8XJYiakTTdRJwqBFJ8pjgIoGOmqU2zTaiaUcahW2UH/0', 'kPF0pXZZTOeiZye8JVW19g=='],
+    ['https://mmocgame.qpic.cn/wechatgame/eMJknoe6wZVOXBUaQsibiauGQvqkzSmcPJ47wDoRhJ6ryyVqztRvaVPzK2icULKhDOF/0', 'LR7EVuhkQ62dyvfFhhaAkw=='],
+    ['https://mmocgame.qpic.cn/wechatgame/tLIYkz3QWI2emtnyYiaXP0pGfUbgZlae1npdD2L5kNcqmdTFkrw6Nxabbza8nWA34/0', 'vxgwmqc9S7CymeQGGqCVcA=='],
+]

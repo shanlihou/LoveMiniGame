@@ -1,4 +1,4 @@
-import { SHARE_TITLES } from "./constant";
+import { SHARE_PIC_INFOS, SHARE_TITLES } from "./constant";
 
 /**
  * 将 Uint8Array 转换为 Base64 字符串
@@ -52,4 +52,8 @@ export function randomWeighted(weights: number[]) {
 
 export function getRandomShareTitle() {
     return SHARE_TITLES[Math.floor(Math.random() * SHARE_TITLES.length)];
+}
+
+export function getRandomSharePicInfo() {
+    return SHARE_PIC_INFOS[Math.floor(Math.random() * SHARE_PIC_INFOS.length)];
 }
