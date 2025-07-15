@@ -1,5 +1,5 @@
-import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate, AudioClip } from 'cc';
-import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, SAVE_HEAD_NAME, SEX_FEMALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_NAME, STORAGE_KEY_SAVE_HEAD, STORAGE_KEY_SEX } from '../common/constant';
+import { _decorator, assetManager, Component, director, ImageAsset, Node, resources, Sprite, SpriteFrame, UITransform, Vec2, Vec3, Color, Prefab, instantiate, AudioClip, Toggle } from 'cc';
+import { EVENT_TYPE_SCALE_FACE_END, FACE_INIT_SIZE, SAVE_HEAD_NAME, SEX_FEMALE, SEX_MALE, STORAGE_KEY_DIY_MSG1, STORAGE_KEY_DIY_MSG2, STORAGE_KEY_DIY_MSG3, STORAGE_KEY_FACE_POSX, STORAGE_KEY_FACE_POSY, STORAGE_KEY_FACE_SCALE, STORAGE_KEY_NAME, STORAGE_KEY_SAVE_HEAD, STORAGE_KEY_SEX } from '../common/constant';
 import { GlobalData } from '../common/globalData';
 import { Label, Button } from 'cc';
 import { ClickRich } from '../component/ClickRich';
@@ -30,13 +30,19 @@ export class startScene extends Component {
     private editDialog: Prefab = null;
 
     @property(Sprite)
-  private bodyBackgroud: Sprite = null;
+    private bodyBackgroud: Sprite = null;
 
     @property(Sprite)
     private bodyBackgroudNoHead: Sprite = null;
 
     @property(Node)
     private addHead: Node = null;
+
+    @property(Toggle)
+    private toggleMale: Toggle = null;
+
+    @property(Toggle)
+    private toggleFemale: Toggle = null;
 
     start() {
       console.log("startScene start");
@@ -82,6 +88,15 @@ export class startScene extends Component {
       let sex = getStorage(STORAGE_KEY_SEX);
       console.log("startScene onLoad sex", typeof(sex));
       this.onSexReset(Number(sex));
+
+      if (sex == SEX_MALE) {
+        this.toggleMale.isChecked = true;
+        this.toggleFemale.isChecked = false;
+      }
+      else {
+        this.toggleMale.isChecked = false;
+        this.toggleFemale.isChecked = true;
+      }
 
       this.loadSaveHead();
     }
@@ -296,6 +311,19 @@ export class startScene extends Component {
 
     onClickShare() {
       shareAppMessage();
+    }
+
+    sexCheck(event: Toggle, customEventData: string){
+      console.log("sexCheck", event.isChecked);
+      let sex = SEX_FEMALE;
+      if (event.isChecked) {
+        sex = SEX_MALE;
+      }
+      else {
+        sex = SEX_FEMALE;
+      }
+      setStorage(STORAGE_KEY_SEX, sex);
+      this.onSexReset(sex);
     }
 }
 

@@ -3981,8 +3981,8 @@
     "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 62.24375,
-    "_fontSize": 46,
+    "_actualFontSize": 56.83125,
+    "_fontSize": 42,
     "_fontFamily": "Arial",
     "_lineHeight": 40,
     "_overflow": 0,
@@ -4032,7 +4032,7 @@
       "__id__": 118
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 126
@@ -4270,7 +4270,7 @@
       "__id__": 118
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 123
